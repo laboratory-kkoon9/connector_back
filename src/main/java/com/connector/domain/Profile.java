@@ -10,13 +10,19 @@ public class Profile {
     private User user;
     private String company;
     private String location;
+    private String bio;
     private List<String> skills;
+    private List<Experience> experience;
+    private List<Education> education;
 
     @Builder
-    public Profile(Long id, String name, String avatar, String company, String location, List<String> skills) {
-        this.user = new User(id, name, avatar);
+    public Profile(Long id, String name, String avatar, String company, String location, String bio, List<String> skills, List<Experience> experience, List<Education> education) {
+        this.user = new User(id, name ,avatar);
         this.company = company;
         this.location = location;
+        this.bio = bio;
         this.skills = skills;
+        this.experience = experience;
+        this.education = education;
     }
 }
