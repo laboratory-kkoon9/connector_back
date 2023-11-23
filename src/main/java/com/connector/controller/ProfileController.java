@@ -1,6 +1,7 @@
 package com.connector.controller;
 
 import com.connector.domain.Profile;
+import com.connector.dto.ProfileDto;
 import com.connector.service.ProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,9 @@ public class ProfileController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getProfiles() {
-        List<Profile> profiles = profileService.getProfiles();
-        return ResponseEntity.ok(profiles);
+    public List<ProfileDto> getProfiles() {
+        List<ProfileDto> profiles = profileService.getProfiles();
+        return profiles;
     }
 
     @GetMapping("/user/{userId}")
