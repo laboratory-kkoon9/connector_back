@@ -1,6 +1,7 @@
 package com.connector.controller;
 
 import com.connector.domain.Profile;
+import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.service.ProfileService;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +28,10 @@ public class ProfileController {
     }
 
     @GetMapping("/user/{userId}")
-    public Profile getProfileById(
+    public ProfileDetailDto getProfileById(
             @PathVariable(value = "userId") final Long userId
     ) {
-        Profile profile = profileService.getProfileById(userId);
-        return profile;
+        ProfileDetailDto profileDetailDto = profileService.getProfileById(userId);
+        return profileDetailDto;
     }
 }

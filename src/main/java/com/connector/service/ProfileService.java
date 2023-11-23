@@ -1,6 +1,7 @@
 package com.connector.service;
 
 import com.connector.domain.Profile;
+import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,17 @@ public class ProfileService {
         return profileDtos;
     }
 
-    public Profile getProfileById(final Long userId) {
-        return profileRepository.findById(userId);
+    public ProfileDetailDto getProfileById(final Long userId) {
+        Profile profile = profileRepository.findById(userId);
+        ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()
+                .user(profile.getUser())
+                .bio(profile.getBio())
+                .company(profile.getCompany())
+                .location(profile.getLocation())
+                .skills(profile.getSkills())
+                .education(profile.getEducation())
+                .experience(profile.getExperience())
+                .build();
+        return profileDetailDto;
     }
 }
