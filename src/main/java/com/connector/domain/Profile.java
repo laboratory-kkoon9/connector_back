@@ -17,7 +17,11 @@ public class Profile {
 
     @Builder
     public Profile(Long id, String name, String avatar, String company, String location, String bio, List<String> skills, List<Experience> experience, List<Education> education) {
-        this.user = new User(id, name ,avatar);
+        this.user = User.builder()
+                .id(id)
+                .name(name)
+                .avatar(avatar)
+                .build();
         this.company = company;
         this.location = location;
         this.bio = bio;
