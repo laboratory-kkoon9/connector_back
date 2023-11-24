@@ -1,6 +1,7 @@
 package com.connector.service;
 
 import com.connector.domain.Profile;
+import com.connector.domain.Skill;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.repository.ProfileRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,24 +25,24 @@ public class ProfileService {
             profileDtos.add(ProfileDto.builder()
                     .user(profile.getUser())
                     .bio(profile.getBio())
-                    .company(profile.getCompany())
+                    .company(profile.getExperiences().isEmpty() ? "" : profile.getExperiences().get(0).getCompany())
                     .location(profile.getLocation())
-                    .skills(profile.getSkills())
+                    .skills(profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList()))
                     .build());
         }
         return profileDtos;
     }
 
     public ProfileDetailDto getProfileById(final Long userId) {
-        Profile profile = profileRepository.findById(userId);
+        Profile profile = profileRepository.findById(userId).get();
         ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()
                 .user(profile.getUser())
                 .bio(profile.getBio())
-                .company(profile.getCompany())
+                .company(profile.getExperiences().get(0).getCompany())
                 .location(profile.getLocation())
                 .skills(profile.getSkills())
-                .education(profile.getEducation())
-                .experience(profile.getExperience())
+                .educations(profile.getEducations())
+                .experiences(profile.getExperiences())
                 .build();
         return profileDetailDto;
     }
