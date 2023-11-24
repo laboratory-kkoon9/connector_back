@@ -13,13 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Getter
 @Entity
-@Table(name = "educations")
+@Table(name = "skills")
 @NoArgsConstructor
-public class Education {
+public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -29,29 +28,13 @@ public class Education {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @Column(name = "school")
-    private String school;
-
-    @Column(name = "degree")
-    private Integer degree;
-
-    @Column(name = "field_of_study")
-    private String fieldOfStudy;
-
-    @Column(name = "start_date")
-    private LocalDate startDate;
-
-    @Column(name = "end_date")
-    private LocalDate endDate;
+    @Column(name = "name")
+    private String name;
 
     @Builder
-    public Education(Long id, Profile profile, String school, Integer degree, String fieldOfStudy, LocalDate startDate, LocalDate endDate) {
+    public Skill(Long id, Profile profile, String name) {
         this.id = id;
         this.profile = profile;
-        this.school = school;
-        this.degree = degree;
-        this.fieldOfStudy = fieldOfStudy;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.name = name;
     }
 }

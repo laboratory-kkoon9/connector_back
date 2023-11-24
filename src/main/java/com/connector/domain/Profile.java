@@ -2,31 +2,48 @@ package com.connector.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "profiles")
+@NoArgsConstructor
 @Getter
 public class Profile {
-    private User user;
-    private String company;
-    private String location;
-    private String bio;
-    private List<String> skills;
-    private List<Experience> experience;
-    private List<Education> education;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
+    private Long id;
 
-    @Builder
-    public Profile(Long id, String name, String avatar, String company, String location, String bio, List<String> skills, List<Experience> experience, List<Education> education) {
-        this.user = User.builder()
-                .id(id)
-                .name(name)
-                .avatar(avatar)
-                .build();
-        this.company = company;
-        this.location = location;
-        this.bio = bio;
-        this.skills = skills;
-        this.experience = experience;
-        this.education = education;
-    }
+    @OneToOne(fetch= FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "bio")
+    private String bio;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
+    private List<Skill> skills = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
+    private List<Experience> experiences = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
+    private List<Education> educations = new ArrayList<>();
 }
