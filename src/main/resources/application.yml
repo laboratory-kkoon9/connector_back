@@ -7,6 +7,7 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
         format_sql: true
+        show_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/connector?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: root
