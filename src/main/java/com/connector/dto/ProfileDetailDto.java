@@ -27,7 +27,7 @@ public class ProfileDetailDto {
         this.location = location;
         this.bio = bio;
         this.skills = skills.stream().map(Skill::getName).collect(Collectors.toList());
-        this.experience = experiences.stream().map(experience -> GetExperienceDto.of(experience)).collect(Collectors.toList());
-        this.education = educations.stream().map(education -> GetEducationDto.of(education)).collect(Collectors.toList());
+        this.experience = experiences.stream().map(GetExperienceDto::of).collect(Collectors.toList());
+        this.education = educations.stream().map(GetEducationDto::of).collect(Collectors.toList());
     }
 }
