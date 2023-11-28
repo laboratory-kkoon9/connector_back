@@ -12,3 +12,8 @@ spring:
     url: jdbc:mysql://localhost:3306/connector?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: root
     password: root
+
+#jwt
+jwt:
+  secret: secrtet
+  issuer: connector
