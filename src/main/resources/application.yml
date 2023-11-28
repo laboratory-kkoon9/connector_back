@@ -15,5 +15,5 @@ spring:
 
 #jwt
 jwt:
-  secret: secrtet
+  secret: secrtetsecrtetsecrtetsecrtetsecrtetsecrtetsecrtetsecrtetsecrtet
   issuer: connector
