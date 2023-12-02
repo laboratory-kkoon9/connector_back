@@ -1,19 +1,18 @@
 package com.connector.service;
 
-import com.connector.config.exception.DuplicateUserEmailException;
-import com.connector.config.filter.jwt.JwtTokenManager;
+import com.connector.global.exception.DuplicateUserEmailException;
 import com.connector.domain.User;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
+import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final JwtTokenManager jwtTokenManager;
+    private final TokenManager tokenManager;
     private final UserRepository userRepository;
 
 
@@ -27,7 +26,7 @@ public class UserService {
 
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
-        String token = jwtTokenManager.generateToken(tokenDto);
+        String token = tokenManager.generateToken(tokenDto);
 
         return token;
     }

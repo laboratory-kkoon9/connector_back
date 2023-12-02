@@ -1,4 +1,4 @@
-package com.connector.config.exception;
+package com.connector.global.exception;
 
 public class UsernameFromTokenException extends RuntimeException{
     public UsernameFromTokenException(String message){

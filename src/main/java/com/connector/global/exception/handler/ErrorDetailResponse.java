@@ -1,4 +1,4 @@
-package com.connector.config.exception.handler;
+package com.connector.global.exception.handler;
 
 import lombok.Builder;
 import lombok.Getter;
