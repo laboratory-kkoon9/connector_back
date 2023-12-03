@@ -4,6 +4,8 @@ import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
+import com.connector.global.exception.NotProfileException;
+import com.connector.global.exception.NotUserException;
 import com.connector.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,9 @@ public class ProfileService {
     }
 
     public ProfileDetailDto getProfileById(final Long userId) {
-        Profile profile = profileRepository.findById(userId).get();
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new NotProfileException()
+        );
         ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()
                 .user(profile.getUser())
                 .bio(profile.getBio())
