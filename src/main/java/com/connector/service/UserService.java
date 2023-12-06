@@ -1,5 +1,7 @@
 package com.connector.service;
 
+import com.connector.dto.LoginDto;
+import com.connector.dto.LoginResponseDto;
 import com.connector.dto.UserDto;
 import com.connector.global.exception.DuplicateUserEmailException;
 import com.connector.domain.User;
@@ -45,5 +47,10 @@ public class UserService {
                 .email(user.getEmail())
                 .avatar(user.getAvatar())
                 .build();
+    }
+
+    public LoginResponseDto login(LoginDto loginDto) {
+        
+        return null;
     }
 }
