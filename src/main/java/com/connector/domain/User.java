@@ -1,5 +1,6 @@
 package com.connector.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class User {
     @Column(name = "email")
     private String email;
     @Column(name = "password")
+    @JsonIgnore
     private String password;
     @Column(name = "avatar")
     private String avatar;
