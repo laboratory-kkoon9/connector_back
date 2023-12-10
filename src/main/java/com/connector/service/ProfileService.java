@@ -22,28 +22,11 @@ public class ProfileService {
 
     public List<ProfileDto> getProfileList() {
         List<Profile> profiles = profileRepository.findAll();
-        List<ProfileDto> profileDtos = profiles.stream()
-                .map(profile -> new ProfileDto(
-                        profile.getUser(),
-                        profile.getExperiences().isEmpty() ? "" : profile.getExperiences().get(0).getCompany(),
-                        profile.getLocation(),
-                        profile.getBio(),
-                        profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList())))
-                .collect(Collectors.toList());
-        return profileDtos;
+        return profiles.stream().map(ProfileDto::new).collect(Collectors.toList());
     }
 
     public ProfileDetailDto getProfileDetail(Long userId) {
         Profile profile = profileRepository.findById(userId).get();
-        ProfileDetailDto profileDetailDto = new ProfileDetailDto(
-                profile.getUser(),
-                profile.getExperiences().isEmpty() ? "" : profile.getExperiences().get(0).getCompany(),
-                profile.getLocation(),
-                profile.getBio(),
-                profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList()),
-                profile.getExperiences().stream().map(ExperienceDto::new).collect(Collectors.toList()),
-                profile.getEducations().stream().map(EducationDto::new).collect(Collectors.toList())
-        );
-        return profileDetailDto;
+        return new ProfileDetailDto(profile);
     }
 }
