@@ -8,10 +8,12 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ProfileDto {
+public class ProfileDetailDto {
     private User user;
     private String company;
     private String location;
     private String bio;
     private List<String> skills;
+    private List<ExperienceDto> experience;
+    private List<EducationDto> education;
 }
