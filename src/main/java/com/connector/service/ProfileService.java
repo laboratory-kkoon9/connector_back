@@ -3,6 +3,7 @@ package com.connector.service;
 import com.connector.domain.*;
 import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
+import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,9 @@ public class ProfileService {
         return profileDtos;
     }
 
-    public ProfileDto getProfileDetail(Long userId) {
+    public ProfileDetailDto getProfileDetail(Long userId) {
         Profile profile = profileRepository.findById(userId).get();
-        ProfileDto profileDto = new ProfileDto(
+        ProfileDetailDto profileDetailDto = new ProfileDetailDto(
                 profile.getUser(),
                 profile.getExperiences().isEmpty() ? "" : profile.getExperiences().get(0).getCompany(),
                 profile.getLocation(),
@@ -45,17 +46,15 @@ public class ProfileService {
                         ex.getPosition(),
                         ex.getDescription(),
                         ex.getStartDate(),
-                        ex.getEndDate()
-                )).collect(Collectors.toList()),
+                        ex.getEndDate())).collect(Collectors.toList()),
                 profile.getEducations().stream().map(ed -> new EducationDto(
                         ed.getSchool(),
                         ed.getDegree(),
                         ed.getFieldOfStudy(),
                         ed.getStartDate(),
-                        ed.getEndDate()
-                )).collect(Collectors.toList())
+                        ed.getEndDate())).collect(Collectors.toList())
         );
-        return profileDto;
+        return profileDetailDto;
     }
 
 }
