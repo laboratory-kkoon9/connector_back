@@ -1,8 +1,6 @@
 package com.connector.service;
 
-import com.connector.domain.*;
-import com.connector.dto.EducationDto;
-import com.connector.dto.ExperienceDto;
+import com.connector.domain.Profile;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.repository.ProfileRepository;
