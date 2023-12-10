@@ -1,5 +1,6 @@
 package com.connector.controller;
 
+import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class ProfileController {
     }
 
     @GetMapping("/api/profile/user/{userId}")
-    public ProfileDto profileDetail(@PathVariable("userId") Long userId) {
+    public ProfileDetailDto profileDetail(@PathVariable("userId") Long userId) {
         return profileService.getProfileDetail(userId);
     }
 
