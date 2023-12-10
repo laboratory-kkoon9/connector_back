@@ -26,8 +26,8 @@ public class User {
     private String name;
     @Column(name = "email")
     private String email;
-    @Column(name = "password")
     @JsonIgnore
+    @Column(name = "password")
     private String password;
     @Column(name = "avatar")
     private String avatar;
