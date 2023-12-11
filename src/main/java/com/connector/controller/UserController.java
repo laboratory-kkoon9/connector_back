@@ -1,8 +1,7 @@
 package com.connector.controller;
 
-import com.connector.dto.ProfileDto;
 import com.connector.dto.RegisterDto;
-import com.connector.dto.RegisterResponseDto;
+import com.connector.dto.TokenResponseDto;
 import com.connector.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public RegisterResponseDto register(@RequestBody RegisterDto registerDto) {
-        System.out.println(registerDto.toString());
-        String token = userService.register(registerDto);
-        return new RegisterResponseDto(token);
+    public TokenResponseDto register(@RequestBody RegisterDto registerDto) {
+        return userService.register(registerDto);
     }
 }
