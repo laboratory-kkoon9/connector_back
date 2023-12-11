@@ -20,22 +20,22 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
-            filterChain.doFilter(request,response);
-        } catch (UsernameFromTokenException ex){
+        try {
+            filterChain.doFilter(request, response);
+        } catch (UsernameFromTokenException ex) {
             log.info("UsernameFromTokenException handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
-        } catch (RuntimeException ex){
+            setErrorResponse(HttpStatus.FORBIDDEN, response, ex);
+        } catch (RuntimeException ex) {
             log.info("RuntimeException exception handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
-        } catch (Exception ex){
+            setErrorResponse(HttpStatus.FORBIDDEN, response, ex);
+        } catch (Exception ex) {
             log.info("Exception exception handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
+            setErrorResponse(HttpStatus.FORBIDDEN, response, ex);
         }
 
     }
 
-    public void setErrorResponse(HttpStatus status, HttpServletResponse response,Throwable ex){
+    public void setErrorResponse(HttpStatus status, HttpServletResponse response, Throwable ex) {
         response.setStatus(status.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

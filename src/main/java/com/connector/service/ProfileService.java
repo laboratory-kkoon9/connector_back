@@ -5,8 +5,7 @@ import com.connector.domain.Skill;
 import com.connector.domain.User;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
-import com.connector.global.exception.NotProfileException;
-import com.connector.global.exception.NotUserException;
+import com.connector.global.exception.BadRequestException;
 import com.connector.repository.ProfileRepository;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +40,10 @@ public class ProfileService {
 
     public ProfileDetailDto getProfileById(final Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotUserException()
+                () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new NotProfileException()
+                () -> new BadRequestException("Not Profile")
         );
 
         ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()

@@ -1,16 +1,12 @@
 package com.connector.service;
 
 import com.connector.dto.LoginDto;
-import com.connector.dto.LoginResponseDto;
-import com.connector.dto.RegisterResponseDto;
 import com.connector.dto.TokenResponseDto;
 import com.connector.dto.UserDto;
-import com.connector.global.exception.DuplicateUserEmailException;
+import com.connector.global.exception.BadRequestException;
 import com.connector.domain.User;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
-import com.connector.global.exception.InvalidUserEmailException;
-import com.connector.global.exception.NotUserException;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +23,7 @@ public class UserService {
     @Transactional
     public TokenResponseDto register(RegisterDto registerDto) {
         if (userRepository.existsByEmail(registerDto.getEmail())) {
-            throw new DuplicateUserEmailException();
+            throw new BadRequestException("User already exists");
         }
 
         User user = userRepository.save(registerDto.toEntity());
@@ -40,7 +36,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDto getAuth(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotUserException()
+                () -> new BadRequestException("Not User")
         );
         return UserDto.builder()
                 .id(user.getId())
@@ -54,7 +50,7 @@ public class UserService {
     public TokenResponseDto login(LoginDto loginDto) {
 
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
-                () -> new InvalidUserEmailException()
+                () -> new BadRequestException("Invalid Credentials")
         );
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
         return tokenManager.generateToken(tokenDto);
