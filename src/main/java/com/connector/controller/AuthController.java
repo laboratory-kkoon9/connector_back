@@ -1,6 +1,7 @@
 package com.connector.controller;
 
 import com.connector.dto.LoginDto;
+import com.connector.dto.LoginResponseDto;
 import com.connector.dto.UserDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping
-    public UserDto login(@RequestBody LoginDto loginDto) {
+    public LoginResponseDto login(@RequestBody LoginDto loginDto) {
         return userService.login(loginDto);
     }
 }

@@ -7,6 +7,7 @@ import com.connector.global.exception.DuplicateUserEmailException;
 import com.connector.domain.User;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
+import com.connector.global.exception.InvalidUserEmailException;
 import com.connector.global.exception.NotUserException;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
@@ -50,7 +51,13 @@ public class UserService {
     }
 
     public LoginResponseDto login(LoginDto loginDto) {
-        
-        return null;
+
+        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
+                () -> new InvalidUserEmailException()
+        );
+        TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
+        String token = tokenManager.generateToken(tokenDto);
+
+        return new LoginResponseDto(token);
     }
 }
