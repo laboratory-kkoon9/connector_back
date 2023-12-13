@@ -18,12 +18,12 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public List<ProfileDto> getProfileList() {
+    public List<ProfileDto> findProfiles() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileDto::new).collect(Collectors.toList());
     }
 
-    public ProfileDetailDto getProfileDetail(Long userId) {
+    public ProfileDetailDto findOneProfile(Long userId) {
         Profile profile = profileRepository.findById(userId).get();
         return new ProfileDetailDto(profile);
     }
