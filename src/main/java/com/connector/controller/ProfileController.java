@@ -19,13 +19,13 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping
-    public List<ProfileDto> profileList() {
-        return profileService.getProfileList();
+    public List<ProfileDto> getProfiles() {
+        return profileService.findProfiles();
     }
 
     @GetMapping("/user/{userId}")
-    public ProfileDetailDto profileDetail(@PathVariable("userId") Long userId) {
-        return profileService.getProfileDetail(userId);
+    public ProfileDetailDto getOneProfile(@PathVariable("userId") Long userId) {
+        return profileService.findOneProfile(userId);
     }
 
 }
