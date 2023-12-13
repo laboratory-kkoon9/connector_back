@@ -1,14 +1,15 @@
 package com.connector.controller;
 
-import com.connector.domain.Profile;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
+import com.connector.dto.UpsertProfileDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,5 +44,12 @@ public class ProfileController {
         Long userId = context.getUserId();
         ProfileDetailDto profileDetailDto = profileService.getProfileById(userId);
         return profileDetailDto;
+    }
+
+    @PostMapping
+    public void upsertProfile(@RequestBody UpsertProfileDto profileDto) {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+        profileService.upsertProfile(userId, profileDto);
     }
 }
