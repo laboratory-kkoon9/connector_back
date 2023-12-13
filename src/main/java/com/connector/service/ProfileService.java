@@ -6,13 +6,11 @@ import com.connector.dto.ProfileDto;
 import com.connector.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProfileService {
 
@@ -24,7 +22,7 @@ public class ProfileService {
     }
 
     public ProfileDetailDto findOneProfile(Long userId) {
-        Profile profile = profileRepository.findById(userId).get();
+        Profile profile = profileRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         return new ProfileDetailDto(profile);
     }
 }
