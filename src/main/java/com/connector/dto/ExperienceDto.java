@@ -1,11 +1,13 @@
 package com.connector.dto;
 
 import com.connector.domain.Experience;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
+@AllArgsConstructor
 public class ExperienceDto {
     private String company;
     private String position;
@@ -13,11 +15,12 @@ public class ExperienceDto {
     private LocalDate from;
     private LocalDate to;
 
-    public ExperienceDto(Experience experience) {
-        company = experience.getCompany();
-        position = experience.getPosition();
-        description = experience.getDescription();
-        from = experience.getStartDate();
-        to = experience.getEndDate();
+    public static ExperienceDto getExperienceDto(Experience experience) {
+        return new ExperienceDto(
+                experience.getCompany(),
+                experience.getPosition(),
+                experience.getDescription(),
+                experience.getStartDate(),
+                experience.getEndDate());
     }
 }
