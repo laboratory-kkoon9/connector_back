@@ -5,6 +5,7 @@ import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
 import com.connector.dto.UserDto;
 import com.connector.global.exception.DuplicateUserEmailException;
+import com.connector.global.exception.NotUserException;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class UserService {
     }
 
     public UserDto getAuth(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findById(userId).orElseThrow(NotUserException::new);
         return UserDto.getUserDto(user);
     }
 }
