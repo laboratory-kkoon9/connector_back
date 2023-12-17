@@ -8,6 +8,7 @@ import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final TokenManager tokenManager;
 
-    public void register(RegisterDto registerDto) {
+    @Transactional
+    public String join(RegisterDto registerDto) {
         if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new DuplicateUserEmailException();
         }
@@ -24,6 +26,6 @@ public class UserService {
 
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
-        tokenManager.generateToken(tokenDto);
+        return tokenManager.generateToken(tokenDto);
     }
 }
