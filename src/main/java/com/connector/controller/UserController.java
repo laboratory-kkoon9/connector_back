@@ -1,7 +1,7 @@
 package com.connector.controller;
 
 import com.connector.dto.RegisterDto;
-import com.connector.dto.ResponseDto;
+import com.connector.dto.RegisterResponseDto;
 import com.connector.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseDto register(@RequestBody RegisterDto registerDto) {
-        return new ResponseDto(userService.join(registerDto));
+    public RegisterResponseDto register(@RequestBody RegisterDto registerDto) {
+        return new RegisterResponseDto(userService.join(registerDto));
     }
 }
