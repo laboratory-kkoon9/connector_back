@@ -3,6 +3,7 @@ package com.connector.service;
 import com.connector.domain.User;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
+import com.connector.dto.UserDto;
 import com.connector.global.exception.DuplicateUserEmailException;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
@@ -27,5 +28,10 @@ public class UserService {
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
         return tokenManager.generateToken(tokenDto);
+    }
+
+    public UserDto getAuth(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+        return UserDto.getUserDto(user);
     }
 }
