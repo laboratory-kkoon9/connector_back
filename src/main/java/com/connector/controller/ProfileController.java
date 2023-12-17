@@ -2,12 +2,11 @@ package com.connector.controller;
 
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
+import com.connector.global.context.TokenContext;
+import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +24,13 @@ public class ProfileController {
 
     @GetMapping("/user/{userId}")
     public ProfileDetailDto getOneProfile(@PathVariable("userId") Long userId) {
+        return profileService.findOneProfile(userId);
+    }
+
+    @PostMapping("/me")
+    public ProfileDetailDto getMyProfile() {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
         return profileService.findOneProfile(userId);
     }
 
