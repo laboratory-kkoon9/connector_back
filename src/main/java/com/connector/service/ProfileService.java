@@ -9,6 +9,7 @@ import com.connector.dto.UpsertProfileDto;
 import com.connector.global.exception.BadRequestException;
 import com.connector.global.util.TextParser;
 import com.connector.repository.ProfileRepository;
+import com.connector.repository.SkillRepository;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final SkillRepository skillRepository;
 
     @Transactional(readOnly = true)
     public List<ProfileDto> getProfiles() {
@@ -55,6 +57,7 @@ public class ProfileService {
                 .user(profile.getUser())
                 .bio(profile.getBio())
                 .company(profile.getExperiences().get(0).getCompany())
+                .website(profile.getWebsite())
                 .location(profile.getLocation())
                 .skills(profile.getSkills())
                 .educations(profile.getEducations())
@@ -70,20 +73,18 @@ public class ProfileService {
         );
         Optional<Profile> optionalProfile = profileRepository.findByUser(user);
 
-        // update
         if(optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
             profile.update(profileDto);
 
-            // 기존에 있던 skill 지우기
             if(profileDto.getSkills() != null) {
+                skillRepository.deleteAllByProfile(profile);
                 List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
                 List<Skill> skills = skillNames.stream().map(
                         Skill::of
                 ).collect(Collectors.toList());
-                profile.addSkills(skills);
+                profile.changeSkills(skills);
             }
-
         } else {
 
         }
