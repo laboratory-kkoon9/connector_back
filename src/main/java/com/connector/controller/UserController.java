@@ -18,6 +18,6 @@ public class UserController {
 
     @PostMapping
     public TokenResponseDto register(@RequestBody RegisterDto registerDto) {
-        return new TokenResponseDto(userService.join(registerDto));
+        return userService.join(registerDto);
     }
 }
