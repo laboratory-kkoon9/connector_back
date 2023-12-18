@@ -3,7 +3,7 @@ package com.connector.service;
 import com.connector.domain.Profile;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
-import com.connector.global.exception.NotProfileException;
+import com.connector.global.exception.BadRequestException;
 import com.connector.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,9 @@ public class ProfileService {
     }
 
     public ProfileDetailDto findOneProfile(Long userId) {
-        Profile profile = profileRepository.findById(userId).orElseThrow(NotProfileException::new);
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
         return new ProfileDetailDto(profile);
     }
 }
