@@ -1,6 +1,7 @@
 package com.connector.domain;
 
 import com.connector.dto.UpsertProfileDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,9 @@ public class Profile {
     @OneToOne(fetch= FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "company")
+    private String company;
 
     @Column(name = "status")
     private String status;
@@ -74,5 +78,19 @@ public class Profile {
         if (skill.getProfile() != this) {
             skill.setProfile(this);
         }
+    }
+
+    @Builder
+    public Profile(Long id, User user, String company, String status, String location, String bio, String website, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
+        this.id = id;
+        this.user = user;
+        this.company = company;
+        this.status = status;
+        this.location = location;
+        this.bio = bio;
+        this.website = website;
+        this.skills = skills;
+        this.experiences = experiences;
+        this.educations = educations;
     }
 }

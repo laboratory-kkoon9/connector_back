@@ -36,7 +36,7 @@ public class ProfileService {
             profileDtos.add(ProfileDto.builder()
                     .user(profile.getUser())
                     .bio(profile.getBio())
-                    .company(profile.getExperiences().isEmpty() ? "" : profile.getExperiences().get(0).getCompany())
+                    .company(profile.getCompany())
                     .location(profile.getLocation())
                     .skills(profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList()))
                     .build());
@@ -56,7 +56,7 @@ public class ProfileService {
         ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()
                 .user(profile.getUser())
                 .bio(profile.getBio())
-                .company(profile.getExperiences().get(0).getCompany())
+                .company(profile.getCompany())
                 .website(profile.getWebsite())
                 .location(profile.getLocation())
                 .skills(profile.getSkills())
@@ -79,14 +79,21 @@ public class ProfileService {
 
             if(profileDto.getSkills() != null) {
                 skillRepository.deleteAllByProfile(profile);
-                List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
-                List<Skill> skills = skillNames.stream().map(
-                        Skill::of
-                ).collect(Collectors.toList());
-                profile.changeSkills(skills);
+                changeSkills(profileDto, profile);
             }
         } else {
-
+            Profile profile = profileDto.toEntity(user);
+            changeSkills(profileDto, profile);
+            profileRepository.save(profile);
         }
+    }
+
+    private void changeSkills(UpsertProfileDto profileDto, Profile profile) {
+
+        List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
+        List<Skill> skills = skillNames.stream().map(
+                Skill::of
+        ).collect(Collectors.toList());
+        profile.changeSkills(skills);
     }
 }
