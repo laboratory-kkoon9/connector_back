@@ -1,6 +1,7 @@
 package com.connector.service;
 
 import com.connector.domain.User;
+import com.connector.dto.LoginDto;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
 import com.connector.dto.UserDto;
@@ -34,5 +35,13 @@ public class UserService {
     public UserDto getAuth(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(NotUserException::new);
         return UserDto.getUserDto(user);
+    }
+
+    public String login(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(IllegalArgumentException::new);
+
+        TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
+
+        return tokenManager.generateToken(tokenDto);
     }
 }
