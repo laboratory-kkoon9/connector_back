@@ -1,7 +1,9 @@
 package com.connector.global.exception.handler;
 
 import com.connector.global.exception.DuplicateUserEmailException;
+import com.connector.global.exception.InvalidUserEmailException;
 import com.connector.global.exception.NotProfileException;
+import com.connector.global.exception.NotUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,26 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotProfileException.class)
     protected ResponseEntity<?> handleBadRequestException(NotProfileException e) {
+        String message = Optional.ofNullable(e.getMessage()).orElseGet(() -> "올바른 요청이 아닙니다. ");
+        ErrorDetailResponse detailResponse = ErrorDetailResponse.builder().msg(message).build();
+        ErrorResponse response = ErrorResponse.builder()
+                .errors(Arrays.asList(detailResponse))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(NotUserException.class)
+    protected ResponseEntity<?> handleBadRequestException(NotUserException e) {
+        String message = Optional.ofNullable(e.getMessage()).orElseGet(() -> "올바른 요청이 아닙니다. ");
+        ErrorDetailResponse detailResponse = ErrorDetailResponse.builder().msg(message).build();
+        ErrorResponse response = ErrorResponse.builder()
+                .errors(Arrays.asList(detailResponse))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(InvalidUserEmailException.class)
+    protected ResponseEntity<?> handleBadRequestException(InvalidUserEmailException e) {
         String message = Optional.ofNullable(e.getMessage()).orElseGet(() -> "올바른 요청이 아닙니다. ");
         ErrorDetailResponse detailResponse = ErrorDetailResponse.builder().msg(message).build();
         ErrorResponse response = ErrorResponse.builder()
