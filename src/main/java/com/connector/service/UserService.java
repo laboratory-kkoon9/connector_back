@@ -6,6 +6,7 @@ import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenDto;
 import com.connector.dto.UserDto;
 import com.connector.global.exception.DuplicateUserEmailException;
+import com.connector.global.exception.InvalidUserEmailException;
 import com.connector.global.exception.NotUserException;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     public String login(LoginDto loginDto) {
-        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(InvalidUserEmailException::new);
 
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
