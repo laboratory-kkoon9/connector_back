@@ -55,6 +55,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         excludeUrlPatterns.add("/api/profile");
         excludeUrlPatterns.add("/api/profile/user/**");
         excludeUrlPatterns.add("/api/users");
+        excludeUrlPatterns.add("/api/auth");
 
         return excludeUrlPatterns.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
     }
