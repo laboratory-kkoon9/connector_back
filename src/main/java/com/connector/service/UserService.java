@@ -1,10 +1,7 @@
 package com.connector.service;
 
 import com.connector.domain.User;
-import com.connector.dto.LoginDto;
-import com.connector.dto.RegisterDto;
-import com.connector.dto.TokenDto;
-import com.connector.dto.UserDto;
+import com.connector.dto.*;
 import com.connector.global.exception.DuplicateUserEmailException;
 import com.connector.global.exception.InvalidUserEmailException;
 import com.connector.global.exception.NotUserException;
@@ -22,7 +19,7 @@ public class UserService {
     private final TokenManager tokenManager;
 
     @Transactional
-    public String join(RegisterDto registerDto) {
+    public TokenResponseDto join(RegisterDto registerDto) {
         if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new DuplicateUserEmailException();
         }
@@ -38,7 +35,8 @@ public class UserService {
         return UserDto.getUserDto(user);
     }
 
-    public String login(LoginDto loginDto) {
+    @Transactional(readOnly = true)
+    public TokenResponseDto login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(InvalidUserEmailException::new);
 
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
