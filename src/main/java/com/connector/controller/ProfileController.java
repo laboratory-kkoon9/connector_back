@@ -1,5 +1,7 @@
 package com.connector.controller;
 
+import com.connector.dto.EducationDto;
+import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.dto.UpsertProfileDto;
@@ -9,6 +11,7 @@ import com.connector.service.ProfileService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,5 +54,15 @@ public class ProfileController {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
         profileService.upsertProfile(userId, profileDto);
+    }
+
+    @PutMapping("/experience")
+    public void addExperience(@RequestBody ExperienceDto experienceDto) {
+
+    }
+
+    @PutMapping("/education")
+    public void addEducation(@RequestBody EducationDto educationDto) {
+
     }
 }
