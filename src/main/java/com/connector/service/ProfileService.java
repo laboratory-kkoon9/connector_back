@@ -78,7 +78,7 @@ public class ProfileService {
             profile.update(profileDto);
 
             if(profileDto.getSkills() != null) {
-                skillRepository.deleteAllByProfile(profile);
+                // skillRepository.deleteAllByProfile(profile);
                 changeSkills(profileDto, profile);
             }
         } else {
@@ -89,7 +89,6 @@ public class ProfileService {
     }
 
     private void changeSkills(UpsertProfileDto profileDto, Profile profile) {
-
         List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
         List<Skill> skills = skillNames.stream().map(
                 Skill::of
