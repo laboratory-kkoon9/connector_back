@@ -3,6 +3,7 @@ package com.connector.service;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
+import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.dto.UpsertProfileDto;
@@ -94,5 +95,17 @@ public class ProfileService {
                 Skill::of
         ).collect(Collectors.toList());
         profile.changeSkills(skills);
+    }
+
+    @Transactional
+    public void addExperience(Long userId, ExperienceDto experienceDto) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+
     }
 }

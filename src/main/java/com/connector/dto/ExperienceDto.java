@@ -1,5 +1,6 @@
 package com.connector.dto;
 
+import com.connector.domain.Experience;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -22,5 +23,12 @@ public class ExperienceDto {
         this.to = to;
         this.current = current;
         this.description = description;
+    }
+
+    public Experience toEntity() {
+        return Experience.builder()
+                .company(company)
+                .position(location)
+                .build();
     }
 }

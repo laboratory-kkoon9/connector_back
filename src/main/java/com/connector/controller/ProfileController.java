@@ -58,11 +58,13 @@ public class ProfileController {
 
     @PutMapping("/experience")
     public void addExperience(@RequestBody ExperienceDto experienceDto) {
-
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
     }
 
     @PutMapping("/education")
     public void addEducation(@RequestBody EducationDto educationDto) {
-
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
     }
 }

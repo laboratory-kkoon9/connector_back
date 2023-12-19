@@ -4,6 +4,7 @@ import com.connector.dto.UpsertProfileDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -80,6 +81,13 @@ public class Profile {
         }
 
         this.skills.add(skill);
+    }
+
+    public void addExperience(Experience experience) {
+        this.experiences.add(experience);
+        if (experience.getProfile() != this) {
+            experience.setProfile(this);
+        }
     }
 
     @Builder
