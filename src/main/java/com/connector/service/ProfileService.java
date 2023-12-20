@@ -106,6 +106,6 @@ public class ProfileService {
                 () -> new BadRequestException("Not Profile")
         );
 
-
+        profile.addExperience(experienceDto.toEntity());
     }
 }

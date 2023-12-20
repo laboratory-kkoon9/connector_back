@@ -60,6 +60,7 @@ public class ProfileController {
     public void addExperience(@RequestBody ExperienceDto experienceDto) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
+        profileService.addExperience(userId, experienceDto);
     }
 
     @PutMapping("/education")
