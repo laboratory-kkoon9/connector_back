@@ -54,4 +54,16 @@ public class Education {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public void setProfile(Profile profile) {
+        if (this.profile != null) {
+            this.profile.getExperiences().remove(this);
+        }
+        this.profile = profile;
+
+        //무한루프에 빠지지 않도록 체크
+        if (!profile.getEducations().contains(this)) {
+            profile.getEducations().add(this);
+        }
+    }
 }

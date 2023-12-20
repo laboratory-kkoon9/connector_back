@@ -67,5 +67,6 @@ public class ProfileController {
     public void addEducation(@RequestBody EducationDto educationDto) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
+        profileService.addEducation(userId, educationDto);
     }
 }

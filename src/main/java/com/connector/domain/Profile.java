@@ -90,6 +90,13 @@ public class Profile {
         }
     }
 
+    public void addEducation(Education education) {
+        this.educations.add(education);
+        if (education.getProfile() != this) {
+            education.setProfile(this);
+        }
+    }
+
     @Builder
     public Profile(Long id, User user, String company, String status, String location, String bio, String website, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
         this.id = id;

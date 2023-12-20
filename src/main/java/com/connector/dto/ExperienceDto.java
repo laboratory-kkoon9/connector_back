@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Getter
-@NoArgsConstructor
 public class ExperienceDto {
     private String title;
     private String company;

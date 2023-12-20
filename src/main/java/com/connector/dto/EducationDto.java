@@ -1,5 +1,6 @@
 package com.connector.dto;
 
+import com.connector.domain.Education;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -12,5 +13,14 @@ public class EducationDto {
     private LocalDate from;
     private LocalDate to;
     private Boolean current;
-    private String description;
+
+    public Education toEntity() {
+        return Education.builder()
+                .school(school)
+                .degree(degree)
+                .fieldOfStudy(fieldOfStudy)
+                .startDate(from)
+                .endDate(to)
+                .build();
+    }
 }
