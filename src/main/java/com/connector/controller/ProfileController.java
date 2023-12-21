@@ -8,6 +8,7 @@ import com.connector.dto.UpsertProfileDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,10 +64,24 @@ public class ProfileController {
         profileService.addExperience(userId, experienceDto);
     }
 
+    @DeleteMapping("/experience/{experience_id}")
+    public void deleteExperience(
+            @PathVariable(value = "experience_id") final Long experienceId
+    ) {
+        profileService.deleteExperience(experienceId);
+    }
+
     @PutMapping("/education")
     public void addEducation(@RequestBody EducationDto educationDto) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
         profileService.addEducation(userId, educationDto);
+    }
+
+    @DeleteMapping("/education/{education_id}")
+    public void deleteEducation(
+            @PathVariable(value = "education_id") final Long educationId
+    ) {
+        profileService.deleteEducation(educationId);
     }
 }

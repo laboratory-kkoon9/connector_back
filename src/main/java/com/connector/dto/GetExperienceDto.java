@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 public class GetExperienceDto {
+    private Long id;
     private String company;
     private String position;
     private String description;
@@ -15,7 +16,8 @@ public class GetExperienceDto {
     private LocalDate to;
 
     @Builder
-    public GetExperienceDto(String company, String position, String description, LocalDate from, LocalDate to) {
+    public GetExperienceDto(Long id, String company, String position, String description, LocalDate from, LocalDate to) {
+        this.id = id;
         this.company = company;
         this.position = position;
         this.description = description;
@@ -25,6 +27,7 @@ public class GetExperienceDto {
 
     public static GetExperienceDto of(Experience experience) {
         return GetExperienceDto.builder()
+                .id(experience.getId())
                 .company(experience.getCompany())
                 .position(experience.getPosition())
                 .description(experience.getDescription())

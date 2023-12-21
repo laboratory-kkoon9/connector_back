@@ -10,8 +10,9 @@ import com.connector.dto.ProfileDto;
 import com.connector.dto.UpsertProfileDto;
 import com.connector.global.exception.BadRequestException;
 import com.connector.global.util.TextParser;
+import com.connector.repository.EducationRepository;
+import com.connector.repository.ExperienceRepository;
 import com.connector.repository.ProfileRepository;
-import com.connector.repository.SkillRepository;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ import java.util.stream.Collectors;
 public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
-    private final SkillRepository skillRepository;
+    private final ExperienceRepository experienceRepository;
+    private final EducationRepository educationRepository;
 
     @Transactional(readOnly = true)
     public List<ProfileDto> getProfiles() {
@@ -111,6 +113,11 @@ public class ProfileService {
     }
 
     @Transactional
+    public void deleteExperience(Long experienceId) {
+        experienceRepository.deleteById(experienceId);
+    }
+
+    @Transactional
     public void addEducation(Long userId, EducationDto educationDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BadRequestException("Not User")
@@ -120,5 +127,10 @@ public class ProfileService {
         );
 
         profile.addEducation(educationDto.toEntity());
+    }
+
+    @Transactional
+    public void deleteEducation(Long educationId) {
+        educationRepository.deleteById(educationId);
     }
 }
