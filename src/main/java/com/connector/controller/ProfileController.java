@@ -19,19 +19,19 @@ public class ProfileController {
 
     @GetMapping
     public List<ProfileDto> getProfiles() {
-        return profileService.findProfiles();
+        return profileService.getProfiles();
     }
 
     @GetMapping("/user/{userId}")
     public ProfileDetailDto getOneProfile(@PathVariable("userId") Long userId) {
-        return profileService.findOneProfile(userId);
+        return profileService.getOneProfile(userId);
     }
 
     @PostMapping("/me")
     public ProfileDetailDto getMyProfile() {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
-        return profileService.findOneProfile(userId);
+        return profileService.getOneProfile(userId);
     }
 
 }

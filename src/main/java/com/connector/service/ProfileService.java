@@ -17,12 +17,12 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public List<ProfileDto> findProfiles() {
+    public List<ProfileDto> getProfiles() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileDto::new).collect(Collectors.toList());
     }
 
-    public ProfileDetailDto findOneProfile(Long userId) {
+    public ProfileDetailDto getOneProfile(Long userId) {
         Profile profile = profileRepository.findById(userId).orElseThrow(
                 () -> new BadRequestException("Not Profile")
         );
