@@ -5,10 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import com.connector.dto.TokenDto;
+import com.connector.dto.TokenResponseDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.global.exception.UsernameFromTokenException;
-import com.connector.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -27,8 +28,9 @@ public class TokenManager {
     public final static Long LOCAL_ACCESS_TOKEN_TIME_OUT = 9999999L * 60 * 60;
     public final static Long ACCESS_TOKEN_TIME_OUT = 1000L * 60 * 60; // 1시간
 
-    public String generateToken(TokenDto tokenDto) {
-        return newToken(tokenDto, LOCAL_ACCESS_TOKEN_TIME_OUT);
+    public TokenResponseDto generateToken(TokenDto tokenDto) {
+        String token = newToken(tokenDto, LOCAL_ACCESS_TOKEN_TIME_OUT);
+        return new TokenResponseDto(token);
     }
 
     private String newToken(TokenDto token, Long expireTime) {
