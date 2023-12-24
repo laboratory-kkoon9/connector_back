@@ -1,6 +1,5 @@
 package com.connector.domain;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,11 +31,20 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "company")
+    private String company;
+
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "location")
     private String location;
 
     @Column(name = "bio")
     private String bio;
+
+    @Column(name = "website")
+    private String website;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Skill> skills = new ArrayList<>();
