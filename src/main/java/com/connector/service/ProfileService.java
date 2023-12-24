@@ -53,4 +53,8 @@ public class ProfileService {
         profile.addExperience(experienceDto.toEntity());
     }
 
+    @Transactional
+    public void deleteExperience(Long experienceId) {
+        experienceRepository.deleteById(experienceId);
+    }
 }

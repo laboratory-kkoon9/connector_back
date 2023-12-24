@@ -42,4 +42,8 @@ public class ProfileController {
         profileService.addExperience(userId, experienceDto);
     }
 
+    @DeleteMapping("/experience/{experienceId}")
+    public void deleteExperience(@PathVariable("experienceId") Long experienceId) {
+        profileService.deleteExperience(experienceId);
+    }
 }
