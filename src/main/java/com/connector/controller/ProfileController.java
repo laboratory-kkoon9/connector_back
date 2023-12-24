@@ -1,5 +1,6 @@
 package com.connector.controller;
 
+import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
@@ -45,5 +46,17 @@ public class ProfileController {
     @DeleteMapping("/experience/{experienceId}")
     public void deleteExperience(@PathVariable("experienceId") Long experienceId) {
         profileService.deleteExperience(experienceId);
+    }
+
+    @PutMapping("/education")
+    public void addEducation(@RequestBody EducationDto educationDto) {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+        profileService.addEducation(userId, educationDto);
+    }
+
+    @DeleteMapping("/education/{educationId}")
+    public void deleteEducation(@PathVariable("educationId") Long educationId) {
+        profileService.deleteEducation(educationId);
     }
 }

@@ -23,4 +23,15 @@ public class EducationDto {
                 education.getStartDate(),
                 education.getEndDate());
     }
+
+    public Education toEntity() {
+        return Education.builder()
+                .school(school)
+                .degree(degree)
+                .fieldOfStudy(fieldOfStudy)
+                .startDate(from)
+                .endDate(to)
+                .build();
+    }
+
 }

@@ -2,10 +2,12 @@ package com.connector.service;
 
 import com.connector.domain.Profile;
 import com.connector.domain.User;
+import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.global.exception.BadRequestException;
+import com.connector.repository.EducationRepository;
 import com.connector.repository.ExperienceRepository;
 import com.connector.repository.ProfileRepository;
 import com.connector.repository.UserRepository;
@@ -23,7 +25,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ExperienceRepository experienceRepository;
-
+    private final EducationRepository educationRepository;
 
     @Transactional(readOnly = true)
     public List<ProfileDto> getProfiles() {
@@ -56,5 +58,20 @@ public class ProfileService {
     @Transactional
     public void deleteExperience(Long experienceId) {
         experienceRepository.deleteById(experienceId);
+    }
+    @Transactional
+    public void addEducation(Long userId, EducationDto educationDto) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+        profile.addEducation(educationDto.toEntity());
+    }
+
+    @Transactional
+    public void deleteEducation(Long educationId) {
+        educationRepository.deleteById(educationId);
     }
 }
