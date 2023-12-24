@@ -27,7 +27,7 @@ public class ProfileController {
         return profileService.getOneProfile(userId);
     }
 
-    @PostMapping("/me")
+    @GetMapping("/me")
     public ProfileDetailDto getMyProfile() {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
