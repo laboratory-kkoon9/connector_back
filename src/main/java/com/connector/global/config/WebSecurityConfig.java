@@ -1,6 +1,5 @@
 package com.connector.global.config;
 
-import com.connector.global.filter.ExceptionHandlerFilter;
 import com.connector.global.filter.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -26,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                 .antMatchers(
                         "/",
                         "/ping",
