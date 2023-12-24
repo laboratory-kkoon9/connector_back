@@ -3,17 +3,7 @@ package com.connector.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,4 +44,13 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Education> educations = new ArrayList<>();
+
+    public void addExperience(Experience experience) {
+        this.experiences.add(experience);
+        if (experience.getProfile() != this) {
+            experience.setProfile(this);
+        }
+    }
+
+
 }

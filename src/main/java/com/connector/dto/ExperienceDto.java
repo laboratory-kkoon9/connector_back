@@ -23,4 +23,14 @@ public class ExperienceDto {
                 experience.getStartDate(),
                 experience.getEndDate());
     }
+
+    public Experience toEntity() {
+        return Experience.builder()
+                .company(company)
+                .position(position)
+                .description(description)
+                .startDate(from)
+                .endDate(to)
+                .build();
+    }
 }
