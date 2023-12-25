@@ -22,3 +22,5 @@ jwt:
 # github
 github:
   base-url: https://api.github.com
+
+except-uri: /swagger-ui/**,/v3/api-docs/**,/swagger-ui.html
