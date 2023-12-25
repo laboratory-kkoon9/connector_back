@@ -9,6 +9,14 @@ import com.connector.dto.UpsertProfileDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name="프로필 API")
 @RestController
 @RequestMapping("/api/profile")
 public class ProfileController {
@@ -36,6 +45,17 @@ public class ProfileController {
     }
 
     @GetMapping("/user/{userId}")
+    @Operation(summary = "프로필 상세 조회 API", description = "프로필의 상세 정보를 조회한다.")
+    @Parameter(name = "userId", description = "유저 ID", in = ParameterIn.PATH)
+    @ApiResponse(
+            responseCode = "200",
+            content = {
+                    @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ProfileDetailDto.class))
+                    )
+            }
+    )
     public ProfileDetailDto getProfileById(
             @PathVariable(value = "userId") final Long userId
     ) {
