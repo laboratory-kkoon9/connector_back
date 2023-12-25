@@ -38,3 +38,4 @@ out/
 
 src/main/resources/application-develop.yml
 !**/src/main/resources/application-develop.yml
+application-develop.yml
