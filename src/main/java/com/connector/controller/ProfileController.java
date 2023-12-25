@@ -2,6 +2,7 @@ package com.connector.controller;
 
 import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
+import com.connector.dto.GithubResponseItemDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.dto.UpsertProfileDto;
@@ -83,5 +84,12 @@ public class ProfileController {
             @PathVariable(value = "education_id") final Long educationId
     ) {
         profileService.deleteEducation(educationId);
+    }
+
+    @GetMapping("/github/{github_id}")
+    public List<GithubResponseItemDto> getGitRepositories(
+            @PathVariable(value = "github_id") final String gitHubId
+    ) {
+        return profileService.getGitRepositories(gitHubId);
     }
 }

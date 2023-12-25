@@ -5,6 +5,7 @@ import com.connector.domain.Skill;
 import com.connector.domain.User;
 import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
+import com.connector.dto.GithubResponseItemDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.dto.UpsertProfileDto;
@@ -30,6 +31,7 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
+    private final GithubClient githubClient;
 
     @Transactional(readOnly = true)
     public List<ProfileDto> getProfiles() {
@@ -132,5 +134,10 @@ public class ProfileService {
     @Transactional
     public void deleteEducation(Long educationId) {
         educationRepository.deleteById(educationId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GithubResponseItemDto> getGitRepositories(String gitHubId) {
+        return githubClient.getUserRepositories(gitHubId);
     }
 }

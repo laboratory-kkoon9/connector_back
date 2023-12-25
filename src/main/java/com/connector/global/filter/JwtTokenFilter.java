@@ -64,6 +64,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
+        if (new AntPathRequestMatcher("/api/profile/github/**", HttpMethod.GET.toString()).matches(request)) {
+            return true;
+        }
+
         if (new AntPathRequestMatcher("/api/auth", HttpMethod.POST.toString()).matches(request)) {
             return true;
         }
