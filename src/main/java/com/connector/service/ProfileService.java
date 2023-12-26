@@ -1,21 +1,18 @@
 package com.connector.service;
 
 import com.connector.domain.Profile;
+import com.connector.domain.Skill;
 import com.connector.domain.User;
-import com.connector.dto.EducationDto;
-import com.connector.dto.ExperienceDto;
-import com.connector.dto.ProfileDetailDto;
-import com.connector.dto.ProfileDto;
+import com.connector.dto.*;
 import com.connector.global.exception.BadRequestException;
-import com.connector.repository.EducationRepository;
-import com.connector.repository.ExperienceRepository;
-import com.connector.repository.ProfileRepository;
-import com.connector.repository.UserRepository;
+import com.connector.global.util.TextParser;
+import com.connector.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +39,33 @@ public class ProfileService {
                 () -> new BadRequestException("Not Profile")
         );
         return new ProfileDetailDto(profile);
+    }
+
+    @Transactional
+    public void upsertProfile(Long userId, UpsertProfileDto profileDto) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Optional<Profile> optionalProfile = profileRepository.findByUser(user);
+
+        if(optionalProfile.isPresent()) {
+            Profile profile = optionalProfile.get();
+            profile.update(profileDto);
+
+            if(profileDto.getSkills() != null) {
+                changeSkills(profileDto, profile);
+            }
+        } else {
+            Profile profile = profileDto.toEntity(user);
+            changeSkills(profileDto, profile);
+            profileRepository.save(profile);
+        }
+    }
+
+    private void changeSkills(UpsertProfileDto profileDto, Profile profile) {
+        List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
+        List<Skill> skills = skillNames.stream().map(Skill::of).collect(Collectors.toList());
+        profile.changeSkills(skills);
     }
 
     @Transactional

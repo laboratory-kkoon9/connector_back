@@ -1,9 +1,6 @@
 package com.connector.controller;
 
-import com.connector.dto.EducationDto;
-import com.connector.dto.ExperienceDto;
-import com.connector.dto.ProfileDetailDto;
-import com.connector.dto.ProfileDto;
+import com.connector.dto.*;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
@@ -36,6 +33,13 @@ public class ProfileController {
         return profileService.getOneProfile(userId);
     }
 
+    @PostMapping
+    public void upsertProfile(@RequestBody UpsertProfileDto profileDto) {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+        profileService.upsertProfile(userId, profileDto);
+    }
+
     @PutMapping("/experience")
     public void addExperience(@RequestBody ExperienceDto experienceDto) {
         TokenContext context = TokenContextHolder.getContext();
@@ -43,8 +47,8 @@ public class ProfileController {
         profileService.addExperience(userId, experienceDto);
     }
 
-    @DeleteMapping("/experience/{experienceId}")
-    public void deleteExperience(@PathVariable("experienceId") Long experienceId) {
+    @DeleteMapping("/experience/{experience_id}")
+    public void deleteExperience(@PathVariable("experience_id") Long experienceId) {
         profileService.deleteExperience(experienceId);
     }
 
@@ -55,8 +59,8 @@ public class ProfileController {
         profileService.addEducation(userId, educationDto);
     }
 
-    @DeleteMapping("/education/{educationId}")
-    public void deleteEducation(@PathVariable("educationId") Long educationId) {
+    @DeleteMapping("/education/{education_id}")
+    public void deleteEducation(@PathVariable("education_id") Long educationId) {
         profileService.deleteEducation(educationId);
     }
 }
