@@ -38,7 +38,7 @@ public class Profile {
     @Column(name = "website")
     private String website;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Skill> skills = new ArrayList<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
