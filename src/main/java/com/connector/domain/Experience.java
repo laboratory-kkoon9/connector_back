@@ -58,5 +58,4 @@ public class Experience {
             profile.getExperiences().add(this);
         }
     }
-
 }

@@ -33,5 +33,4 @@ public class EducationDto {
                 .endDate(to)
                 .build();
     }
-
 }

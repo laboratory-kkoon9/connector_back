@@ -83,6 +83,7 @@ public class ProfileService {
     public void deleteExperience(Long experienceId) {
         experienceRepository.deleteById(experienceId);
     }
+
     @Transactional
     public void addEducation(Long userId, EducationDto educationDto) {
         User user = userRepository.findById(userId).orElseThrow(

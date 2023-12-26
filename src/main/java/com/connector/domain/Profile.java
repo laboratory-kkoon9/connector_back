@@ -67,7 +67,6 @@ public class Profile {
         if (skill.getProfile() != this) {
             skill.setProfile(this);
         }
-
         this.skills.add(skill);
     }
 
