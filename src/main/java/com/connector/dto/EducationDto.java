@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 public class EducationDto {
+    private Long id;
     private String school;
     private Integer degree;
     private String fieldOfStudy;
@@ -17,6 +18,7 @@ public class EducationDto {
 
     public static EducationDto getEducationDto(Education education) {
         return new EducationDto(
+                education.getId(),
                 education.getSchool(),
                 education.getDegree(),
                 education.getFieldOfStudy(),
