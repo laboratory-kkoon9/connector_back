@@ -37,4 +37,22 @@ public class Skill {
         this.profile = profile;
         this.name = name;
     }
+
+    public void setProfile(Profile profile) {
+        if (this.profile != null) {
+            this.profile.getSkills().remove(this);
+        }
+        this.profile = profile;
+
+        //무한루프에 빠지지 않도록 체크
+        if(!profile.getSkills().contains(this)) {
+            profile.getSkills().add(this);
+        }
+    }
+
+    public static Skill of(String name) {
+        return Skill.builder()
+                .name(name)
+                .build();
+    }
 }

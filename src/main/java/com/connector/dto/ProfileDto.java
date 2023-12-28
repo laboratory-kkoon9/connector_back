@@ -17,7 +17,7 @@ public class ProfileDto {
 
     public ProfileDto(Profile profile) {
         user = UserDto.getUserDto(profile.getUser());
-        company = profile.getExperiences().isEmpty() ? "" : profile.getExperiences().get(0).getCompany();
+        company = profile.getCompany();
         location = profile.getLocation();
         bio = profile.getBio();
         skills = profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList());

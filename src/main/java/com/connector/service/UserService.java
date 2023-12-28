@@ -22,7 +22,6 @@ public class UserService {
             throw new BadRequestException("User already exists");
         }
         User user = userRepository.save(registerDto.toEntity());
-
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
         return tokenManager.generateToken(tokenDto);
@@ -39,7 +38,6 @@ public class UserService {
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
                 () -> new BadRequestException("Invalid Credentials")
         );
-
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
         return tokenManager.generateToken(tokenDto);

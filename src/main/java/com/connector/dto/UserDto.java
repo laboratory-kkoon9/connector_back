@@ -18,5 +18,4 @@ public class UserDto {
                 user.getEmail(),
                 user.getAvatar());
     }
-
 }
