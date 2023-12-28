@@ -4,6 +4,8 @@ import com.connector.domain.Profile;
 import com.connector.domain.User;
 import lombok.Getter;
 
+import java.util.ArrayList;
+
 @Getter
 public class UpsertProfileDto {
     private String company;
@@ -20,6 +22,9 @@ public class UpsertProfileDto {
                 .website(website)
                 .bio(bio)
                 .status(status)
+                .skills(new ArrayList<>())
+                .experiences(new ArrayList<>())
+                .educations(new ArrayList<>())
                 .build();
     }
 }
