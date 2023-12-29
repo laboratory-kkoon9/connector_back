@@ -18,3 +18,7 @@ spring:
 jwt:
   secret: secrtetsecrtetsecrtetsecrtetsecrtetsecrtetsecrtetsecrtetsecrtet
   issuer: connector
+
+# github
+github:
+  base-url: https://api.github.com

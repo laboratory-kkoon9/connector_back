@@ -63,4 +63,11 @@ public class ProfileController {
     public void deleteEducation(@PathVariable("education_id") Long educationId) {
         profileService.deleteEducation(educationId);
     }
+
+    @GetMapping("/github/{github_id}")
+    public List<GithubResponseItemDto> getGitRepositories(
+            @PathVariable(value = "github_id") final String gitHubId
+    ) {
+        return profileService.getGitRepositories(gitHubId);
+    }
 }
