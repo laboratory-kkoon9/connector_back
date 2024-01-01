@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -29,4 +30,7 @@ public class Comment {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

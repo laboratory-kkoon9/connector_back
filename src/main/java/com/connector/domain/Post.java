@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class Post {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Like> likes = new ArrayList<>();
 
@@ -38,10 +42,11 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Post(Long id, Long userId, String content, List<Like> likes, List<Comment> comments) {
+    public Post(Long id, Long userId, String content, LocalDateTime createdAt, List<Like> likes, List<Comment> comments) {
         this.id = id;
         this.userId = userId;
         this.content = content;
+        this.createdAt = createdAt;
         this.likes = likes;
         this.comments = comments;
     }
