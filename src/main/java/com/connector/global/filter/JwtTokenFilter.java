@@ -3,6 +3,7 @@ package com.connector.global.filter;
 import com.connector.global.token.TokenManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
@@ -23,6 +25,9 @@ import java.util.LinkedHashSet;
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final TokenManager tokenManager;
     private final static String AUTHORIZATION_HEADER = "x-auth-token";
+
+    @Value("${except-uri}")
+    private String exceptURI;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, NullPointerException {
@@ -52,8 +57,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
-        Collection<String> excludeUrlPatterns = new LinkedHashSet<>();
-
         if (new AntPathRequestMatcher("/api/profile", HttpMethod.GET.toString()).matches(request)) {
             return true;
         }
@@ -74,6 +77,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
-        return excludeUrlPatterns.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
+        return Arrays.asList(exceptURI.split(",").clone())
+                .stream()
+                .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
     }
 }
