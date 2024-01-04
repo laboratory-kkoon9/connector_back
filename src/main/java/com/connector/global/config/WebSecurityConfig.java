@@ -3,7 +3,6 @@ package com.connector.global.config;
 import com.connector.global.filter.ExceptionHandlerFilter;
 import com.connector.global.filter.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,7 +13,6 @@ import org.springframework.web.cors.CorsUtils;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Order(300)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenFilter jwtTokenFilter;
