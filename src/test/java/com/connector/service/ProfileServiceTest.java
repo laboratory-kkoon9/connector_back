@@ -1,6 +1,7 @@
 package com.connector.service;
 
 import com.connector.dto.ProfileDetailDto;
+import com.connector.dto.ProfileDto;
 import com.connector.global.exception.BadRequestException;
 import com.connector.repository.EducationRepository;
 import com.connector.repository.ExperienceRepository;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,6 +46,27 @@ class ProfileServiceTest {
     @BeforeEach
     void init() {
         profileService = new ProfileService(profileRepository, userRepository, experienceRepository, educationRepository, githubClient);
+    }
+
+    @Test
+    @DisplayName("전체 프로필 조회 정보를 리턴한다.")
+    void get_profiles_test() {
+        // given, when
+        List<ProfileDto> result = profileService.getProfiles();
+
+        // then
+        ProfileDto profile = result.get(0);
+        assertAll(
+                () -> assertThat(profile.getLocation()).isEqualTo("Bucheon"),
+                () -> assertThat(profile.getBio()).isEqualTo("안녕하세요 JSCode의 Eric 부캐입니다."),
+                () -> assertAll(
+                        () -> assertThat(profile.getSkills()).hasSize(4),
+                        () -> assertThat(profile.getSkills().get(0)).isEqualTo("React"),
+                        () -> assertThat(profile.getSkills().get(1)).isEqualTo("Express"),
+                        () -> assertThat(profile.getSkills().get(2)).isEqualTo("Spring Framework"),
+                        () -> assertThat(profile.getSkills().get(3)).isEqualTo("Android")
+                )
+        );
     }
 
     @Test
@@ -100,4 +124,18 @@ class ProfileServiceTest {
                 () -> assertThat(result.getLocation()).isEqualTo("Bucheon")
         );
     }
+
+    @Test
+    @DisplayName("유효하지 않은 userId에 대해서는 BadRequestException 예외를 던진다.")
+    void profile_upsert_test1() {
+        // given
+        Long userId = 3L;
+
+        // when, then
+        assertThatThrownBy(() -> profileService.upsertProfile(userId, null))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Not User");
+    }
+
+
 }
