@@ -31,7 +31,7 @@ public class UserController {
             content = {
                     @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ProfileDetailDto.class))
+                            array = @ArraySchema(schema = @Schema(implementation = RegisterDto.class))
                     )
             }
     )

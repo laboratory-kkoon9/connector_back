@@ -25,13 +25,13 @@ public class AuthController {
     private final UserService userService;
 
     @GetMapping
-    @Operation(summary = "권한 부여 API", description = "권한을 부여한다.")
+    @Operation(summary = "정보 조회 API", description = "사용자의 정보를 조회한다.")
     @ApiResponse(
             responseCode = "200",
             content = {
                     @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ProfileDetailDto.class))
+                            array = @ArraySchema(schema = @Schema(implementation = UserDto.class))
                     )
             }
     )
@@ -48,7 +48,7 @@ public class AuthController {
             content = {
                     @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ProfileDetailDto.class))
+                            array = @ArraySchema(schema = @Schema(implementation = LoginDto.class))
                     )
             }
     )
