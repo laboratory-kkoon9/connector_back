@@ -38,6 +38,8 @@ public class UserService {
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
                 () -> new BadRequestException("Invalid Credentials")
         );
+        if (!user.checkPassword(loginDto.getPassword())) throw new BadRequestException("Check Password");
+
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
         return tokenManager.generateToken(tokenDto);
