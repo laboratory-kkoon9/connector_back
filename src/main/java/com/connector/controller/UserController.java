@@ -1,6 +1,5 @@
 package com.connector.controller;
 
-import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenResponseDto;
 import com.connector.service.UserService;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @Tag(name="유저 API")
 @RestController
@@ -36,7 +37,7 @@ public class UserController {
             }
     )
     public TokenResponseDto register(
-            @RequestBody RegisterDto registerDto
+            @Valid @RequestBody RegisterDto registerDto
     ) {
         return userService.join(registerDto);
     }

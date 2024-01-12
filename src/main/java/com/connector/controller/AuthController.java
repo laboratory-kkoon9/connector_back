@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name="권 API")
 @RestController
 @RequestMapping("/api/auth")
@@ -53,7 +55,7 @@ public class AuthController {
             }
     )
     public TokenResponseDto login(
-            @RequestBody LoginDto loginDto
+            @Valid @RequestBody LoginDto loginDto
     ) {
         return userService.login(loginDto);
     }
