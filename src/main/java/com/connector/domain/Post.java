@@ -4,14 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +19,9 @@ public class Post {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @OneToOne(fetch= FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "content")
     private String content;
@@ -42,9 +36,9 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Post(Long id, Long userId, String content, LocalDateTime createdAt, List<Like> likes, List<Comment> comments) {
+    public Post(Long id, User user, String content, LocalDateTime createdAt, List<Like> likes, List<Comment> comments) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.content = content;
         this.createdAt = createdAt;
         this.likes = likes;

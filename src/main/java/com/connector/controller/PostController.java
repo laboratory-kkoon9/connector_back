@@ -1,12 +1,15 @@
 package com.connector.controller;
 
 import com.connector.dto.CreatePostDto;
+import com.connector.dto.PostDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.PostService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name="게시물 API")
 @RestController
@@ -22,4 +25,10 @@ public class PostController {
         Long userId = context.getUserId();
         postService.createPost(userId, postDto);
     }
+
+    @GetMapping
+    public List<PostDto> getPosts() {
+        return postService.getPosts();
+    }
+
 }

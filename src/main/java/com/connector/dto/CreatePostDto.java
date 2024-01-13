@@ -1,6 +1,7 @@
 package com.connector.dto;
 
 import com.connector.domain.Post;
+import com.connector.domain.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public class CreatePostDto {
 
     public Post toEntity(Long userId) {
         return new Post().builder()
-                .userId(userId)
+                .user(User.builder().id(userId).build())
                 .content(text)
                 .createdAt(LocalDateTime.now())
                 .likes(new ArrayList<>())
