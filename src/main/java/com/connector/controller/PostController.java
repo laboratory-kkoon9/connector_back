@@ -1,11 +1,13 @@
 package com.connector.controller;
 
 import com.connector.dto.CreatePostDto;
+import com.connector.dto.PostDetailDto;
 import com.connector.dto.PostDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.PostService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,13 @@ public class PostController {
     @GetMapping
     public List<PostDto> getPosts() {
         return postService.getPosts();
+    }
+
+    @GetMapping("/{post_id}")
+    public PostDetailDto getOnePost(
+            @PathVariable("post_id") Long postId
+    ) {
+        return postService.getOnePost(postId);
     }
 
 }

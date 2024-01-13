@@ -2,8 +2,10 @@ package com.connector.service;
 
 import com.connector.domain.Post;
 import com.connector.dto.CreatePostDto;
+import com.connector.dto.PostDetailDto;
 import com.connector.dto.PostDto;
 import com.connector.dto.ProfileDto;
+import com.connector.global.exception.BadRequestException;
 import com.connector.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,13 @@ public class PostService {
     public List<PostDto> getPosts() {
         List<Post> posts = postRepository.findAll();
         return posts.stream().map(PostDto::new).collect(Collectors.toList());
+    }
+
+    public PostDetailDto getOnePost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new BadRequestException("Not Post")
+        );
+        return new PostDetailDto(post);
     }
 
 }

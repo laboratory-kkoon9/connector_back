@@ -3,15 +3,7 @@ package com.connector.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -27,6 +19,10 @@ public class Comment {
     @ManyToOne(fetch= FetchType.LAZY, optional = false)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @OneToOne(fetch= FetchType.EAGER, optional = false)
+    @JoinColumn(name = "writer_id")
+    private User writer;
 
     @Column(name = "content")
     private String content;
