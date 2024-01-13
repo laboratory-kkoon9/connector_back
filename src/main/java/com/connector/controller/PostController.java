@@ -9,6 +9,7 @@ import com.connector.repository.model.GetPostRequestModel;
 import com.connector.service.PostService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,5 +43,12 @@ public class PostController {
             @PathVariable(value = "post_id") final Long postId
     ) {
         return postService.getPostById(postId);
+    }
+
+    @DeleteMapping("/{post-id}")
+    public void deletePost(
+            @PathVariable(value = "post-id") final Long postId
+    ) {
+        postService.deletePost(postId);
     }
 }

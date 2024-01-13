@@ -38,4 +38,8 @@ public class PostService {
         );
         return PostDetailResponseDto.of(post);
     }
+
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
 }
