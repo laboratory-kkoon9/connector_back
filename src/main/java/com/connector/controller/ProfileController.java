@@ -96,6 +96,15 @@ public class ProfileController {
         profileService.upsertProfile(userId, profileDto);
     }
 
+    @DeleteMapping
+    public void deleteProfile() {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+        profileService.deleteProfile(userId);
+    }
+
+
+
     @PutMapping("/experience")
     @Operation(summary = "경력 추가 API", description = "경력을 추가 한다.")
     @ApiResponse(

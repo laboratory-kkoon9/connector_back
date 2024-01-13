@@ -23,6 +23,7 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
+    private final PostRepository postRepository;
     private final GithubClient githubClient;
 
 
@@ -68,6 +69,16 @@ public class ProfileService {
         List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
         List<Skill> skills = skillNames.stream().map(Skill::of).collect(Collectors.toList());
         profile.changeSkills(skills);
+    }
+
+    @Transactional
+    public void deleteProfile(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        profileRepository.deleteAllByUser(user);
+        postRepository.deleteAllByUser(user);
+        userRepository.delete(user);
     }
 
     @Transactional
