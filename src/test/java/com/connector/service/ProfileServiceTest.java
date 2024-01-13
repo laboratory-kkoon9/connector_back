@@ -3,10 +3,7 @@ package com.connector.service;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.global.exception.BadRequestException;
-import com.connector.repository.EducationRepository;
-import com.connector.repository.ExperienceRepository;
-import com.connector.repository.ProfileRepository;
-import com.connector.repository.UserRepository;
+import com.connector.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +35,9 @@ class ProfileServiceTest {
     @Autowired
     private EducationRepository educationRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     @Mock
     private GithubClient githubClient;
 
@@ -45,7 +45,7 @@ class ProfileServiceTest {
 
     @BeforeEach
     void init() {
-        profileService = new ProfileService(profileRepository, userRepository, experienceRepository, educationRepository, githubClient);
+        profileService = new ProfileService(profileRepository, userRepository, experienceRepository, educationRepository, postRepository, githubClient);
     }
 
     @Test
