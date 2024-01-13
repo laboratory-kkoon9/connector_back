@@ -1,5 +1,6 @@
 package com.connector.domain;
 
+import com.connector.global.exception.BadRequestException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,9 @@ public class User {
         this.avatar = avatar;
     }
 
-    public boolean checkPassword(String password) {
-        return this.password.equals(password);
+    public void checkPassword(String password) {
+        if (!this.password.equals(password)) {
+            throw new BadRequestException("Check Password");
+        }
     }
 }
