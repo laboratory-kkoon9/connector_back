@@ -22,7 +22,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public void createPost(@RequestBody CreatePostDto postDto) {
+    public void createPost(
+            @RequestBody CreatePostDto postDto
+    ) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
         postService.createPost(userId, postDto);
@@ -38,6 +40,13 @@ public class PostController {
             @PathVariable("post_id") Long postId
     ) {
         return postService.getOnePost(postId);
+    }
+
+    @DeleteMapping("/{post_id}")
+    public void deletePost(
+            @PathVariable("post_id") Long postId
+    ){
+        postService.deletePost(postId);
     }
 
 }
