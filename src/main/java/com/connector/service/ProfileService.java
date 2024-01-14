@@ -12,9 +12,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
+    private final ProfileRepository profileRepository;
 
     @Autowired
-    private ProfileRepository profileRepository;
+    public ProfileService(ProfileRepository profileRepository) {
+        this.profileRepository = profileRepository;
+    }
 
     public List<ProfileDto> getAllProfiles() {
         return profileRepository.findAll().stream()
@@ -33,7 +36,6 @@ public class ProfileService {
         List<String> skillNames = profile.getSkills().stream()
                 .map(Skill::getName)
                 .collect(Collectors.toList()); // 스트림의 map 연산을 사용하여 각 Skill 객체의 getName 메소드를 호출하고, 결과를 새 리스트로 수집
-
 
         return ProfileDto.builder()
                 .user(userDto)
