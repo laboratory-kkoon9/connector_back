@@ -21,7 +21,7 @@ public class GithubClient {
 
     private final WebClient webClient;
 
-    @Value("{github.base-url}")
+    @Value("${github.base-url}")
     private String GITHUB_BASE_URL;
 
     @Value("${github.token}")
