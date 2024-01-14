@@ -7,12 +7,12 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ProfileDto {
+public class ProfileIdDto {
     private UserDto user;
     private String company;
     private String location;
     private String bio;
     private List<String> skills;
-    private List<ExperienceDto> experience;
-    private List<EducationDto> education;
+    private List<ExperienceDto> experiences;
+    private List<EducationDto> educations;
 }
