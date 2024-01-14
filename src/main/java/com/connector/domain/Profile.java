@@ -55,4 +55,16 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Education> educations = new ArrayList<>();
+
+    @Builder
+    public Profile(Long id, User user, String company, String location, String bio, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
+        this.id = id;
+        this.user = user;
+        this.company = company;
+        this.location = location;
+        this.bio = bio;
+        this.skills = skills;
+        this.experiences = experiences;
+        this.educations = educations;
+    }
 }
