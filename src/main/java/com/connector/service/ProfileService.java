@@ -23,6 +23,9 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
+    private final PostRepository postRepository;
+    private final GithubClient githubClient;
+
 
     @Transactional(readOnly = true)
     public List<ProfileDto> getProfiles() {
@@ -69,6 +72,16 @@ public class ProfileService {
     }
 
     @Transactional
+    public void deleteProfile(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        profileRepository.deleteAllByUser(user);
+        postRepository.deleteAllByUser(user);
+        userRepository.delete(user);
+    }
+
+    @Transactional
     public void addExperience(Long userId, ExperienceDto experienceDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BadRequestException("Not User")
@@ -98,5 +111,10 @@ public class ProfileService {
     @Transactional
     public void deleteEducation(Long educationId) {
         educationRepository.deleteById(educationId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GithubResponseItemDto> getGitRepositories(String gitHubId) {
+        return githubClient.getUserRepositories(gitHubId);
     }
 }

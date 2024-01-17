@@ -27,6 +27,7 @@ public class UserService {
         return tokenManager.generateToken(tokenDto);
     }
 
+    @Transactional(readOnly = true)
     public UserDto getAuth(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BadRequestException("Not User")
@@ -34,10 +35,13 @@ public class UserService {
         return UserDto.getUserDto(user);
     }
 
+    @Transactional
     public TokenResponseDto login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
                 () -> new BadRequestException("Invalid Credentials")
         );
+        user.checkPassword(loginDto.getPassword());
+
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
         return tokenManager.generateToken(tokenDto);

@@ -23,20 +23,20 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "company")
     private String company;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "website")
+    private String website;
 
     @Column(name = "location")
     private String location;
 
     @Column(name = "bio")
     private String bio;
-
-    @Column(name = "website")
-    private String website;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Skill> skills = new ArrayList<>();
@@ -49,10 +49,10 @@ public class Profile {
 
     public void update(UpsertProfileDto profileDto) {
         if(profileDto.getStatus() != null) this.status = profileDto.getStatus();
+        if(profileDto.getCompany() != null) this.company = profileDto.getCompany();
         if(profileDto.getWebsite() != null) this.website = profileDto.getWebsite();
         if(profileDto.getLocation() != null) this.location = profileDto.getLocation();
         if(profileDto.getBio() != null) this.bio = profileDto.getBio();
-        if(profileDto.getStatus() != null) this.status = profileDto.getStatus();
     }
 
     public void changeSkills(List<Skill> skills) {
@@ -85,14 +85,14 @@ public class Profile {
     }
 
     @Builder
-    public Profile(Long id, User user, String company, String status, String location, String bio, String website, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
+    public Profile(Long id, User user, String status, String company,String website, String location, String bio, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
         this.id = id;
         this.user = user;
-        this.company = company;
         this.status = status;
+        this.company = company;
+        this.website = website;
         this.location = location;
         this.bio = bio;
-        this.website = website;
         this.skills = skills;
         this.experiences = experiences;
         this.educations = educations;
