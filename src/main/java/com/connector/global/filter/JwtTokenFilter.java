@@ -74,9 +74,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
-        return Arrays.asList(exceptURI.split(",").clone())
-                .stream()
-                .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
+        return false;
+
+//        return Arrays.asList(exceptURI.split(",").clone())
+//                .stream()
+//                .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
     }
 //        if 문과 같은 원리이지만 아래 부분은 스트림을 사용해야지만 사용이 가능하다.
 //        anyMatch()

@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("api/profile")
 public class ProfileController {
 
-
     private final ProfileService profileService;
 
     @GetMapping
