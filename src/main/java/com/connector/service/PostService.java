@@ -11,6 +11,7 @@ import com.connector.repository.model.GetPostRequestModel;
 import com.connector.repository.model.GetPostResponseModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,11 +21,13 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
 
+    @Transactional
     public PostDetailResponseDto createPost(Long userId, CreatePostDto postDto) {
         Post post = postRepository.save(postDto.toEntity(userId));
         return getPostById(post.getId());
     }
 
+    @Transactional(readOnly = true)
     public List<PostResponseDto> getPosts() {
         List<GetPostResponseModel> posts = postRepository.getPosts(GetPostRequestModel.builder().build());
 
@@ -41,21 +44,26 @@ public class PostService {
         return PostDetailResponseDto.of(post);
     }
 
+    @Transactional
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
     }
 
+    @Transactional
     public void likePost(Long userId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new BadRequestException("Not Post")
         );
 
-        boolean alreadyLike = post.getLikes().stream().map(Like::getUserId).anyMatch(uid -> uid == userId);
+        boolean alreadyLike = post.getLikes()
+                .stream()
+                .map(Like::getUserId)
+                .anyMatch(uid -> uid == userId);
 
         if (alreadyLike) {
             throw new BadRequestException("이미 좋아요를 누른 게시물입니다.");
         }
 
-
+        post.addLike(Like.builder().userId(userId).build());
     }
 }
