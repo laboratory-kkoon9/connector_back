@@ -13,6 +13,4 @@ public class ProfileDto {
     private String location;
     private String bio;
     private List<String> skills;
-    private List<ExperienceDto> experience;
-    private List<EducationDto> education;
 }

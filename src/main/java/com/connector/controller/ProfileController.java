@@ -1,5 +1,6 @@
 package com.connector.controller;
 
+import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ProfileController {
     }
 
     @GetMapping("/user/{userId}")
-    public ProfileDto getProfileByUserId(@PathVariable Long userId) {
+    public ProfileDetailDto getProfileByUserId(@PathVariable Long userId) {
         return profileService.getProfileByUserId(userId);
     }
 }
