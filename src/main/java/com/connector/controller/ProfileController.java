@@ -2,6 +2,8 @@ package com.connector.controller;
 
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
+import com.connector.global.context.TokenContext;
+import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,5 +25,13 @@ public class ProfileController {
     @GetMapping("/user/{userId}")
     public ProfileDetailDto getProfileByUserId(@PathVariable Long userId) {
         return profileService.getProfileByUserId(userId);
+    }
+
+    @GetMapping("/me") // 본인의 프로필조회
+    public ProfileDetailDto getMyProfile() {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+        ProfileDetailDto profileDetailDto = profileService.getProfileByUserId(userId);
+        return profileDetailDto;
     }
 }
