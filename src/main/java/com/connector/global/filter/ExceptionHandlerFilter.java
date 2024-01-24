@@ -3,8 +3,6 @@ package com.connector.global.filter;
 import com.connector.global.exception.UsernameFromTokenException;
 import com.connector.global.exception.handler.ErrorDetailResponse;
 import com.connector.global.exception.handler.ErrorResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,45 +13,33 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
-    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            filterChain.doFilter(request, response);
-        } catch (UsernameFromTokenException ex) {
+        try{
+            filterChain.doFilter(request,response);
+        } catch (UsernameFromTokenException ex){
             log.info("UsernameFromTokenException handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN, response, ex);
-        } catch (RuntimeException ex) {
+            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
+        } catch (RuntimeException ex){
             log.info("RuntimeException exception handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN, response, ex);
-        } catch (Exception ex) {
+            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
+        } catch (Exception ex){
             log.info("Exception exception handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN, response, ex);
+            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
         }
 
     }
 
-    private void setErrorResponse(HttpStatus status, HttpServletResponse response, Throwable ex) {
+    public void setErrorResponse(HttpStatus status, HttpServletResponse response,Throwable ex){
         response.setStatus(status.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        ErrorDetailResponse detailResponse = ErrorDetailResponse.builder().msg(ex.getMessage()).build();
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .errors(Arrays.asList(detailResponse))
-                .build();
-
-        try{
-            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        ErrorResponse errorResponse = new ErrorResponse(new ErrorDetailResponse(ex.getMessage()));
     }
 }
