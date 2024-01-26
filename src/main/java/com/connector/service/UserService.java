@@ -19,7 +19,6 @@ public class UserService {
     private final TokenManager tokenManager;
     private final UserRepository userRepository;
 
-
     @Transactional
     public TokenResponseDto register(RegisterDto registerDto) {
         if (userRepository.existsByEmail(registerDto.getEmail())) {
@@ -27,7 +26,10 @@ public class UserService {
         }
 
         User user = userRepository.save(registerDto.toEntity());
+        return toTokenResponseDto(user);
+    }
 
+    private TokenResponseDto toTokenResponseDto(User user) {
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
 
         return tokenManager.generateToken(tokenDto);
@@ -55,8 +57,6 @@ public class UserService {
         if(!user.checkPassword(loginDto.getPassword())) {
             throw new BadRequestException("비밀번호가 올바르지 않습니다.");
         }
-
-        TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
-        return tokenManager.generateToken(tokenDto);
+        return toTokenResponseDto(user);
     }
 }
