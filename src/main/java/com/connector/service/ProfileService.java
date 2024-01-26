@@ -72,4 +72,33 @@ public class ProfileService {
         return profileDetailDto;
     }
 
+    // 프로필 상세조회
+    public ProfileDetailDto profileDetailMe(Long userId) {
+
+        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+
+        ProfileDetailDto profileDetailDto;
+        profileDetailDto = ProfileDetailDto.builder()
+                .user(profile.getUser())
+                .bio(profile.getBio())
+                .company(profile.getCompany())
+                .website(profile.getWebsite())
+                .location(profile.getLocation())
+                .skills(profile.getSkills())
+                .educations(profile.getEducations())
+                .experiences(profile.getExperiences())
+                .build();
+
+        return profileDetailDto;
+    }
+
+
+
 }
