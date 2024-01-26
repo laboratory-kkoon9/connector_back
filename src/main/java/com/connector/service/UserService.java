@@ -48,10 +48,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public TokenResponseDto login(LoginDto loginDto) {
-
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
                 () -> new BadRequestException("Invalid Credentials")
         );
+
+        if(!user.checkPassword(loginDto.getPassword())) {
+            throw new BadRequestException("비밀번호가 올바르지 않습니다.");
+        }
+
         TokenDto tokenDto = TokenDto.builder().userId(user.getId()).build();
         return tokenManager.generateToken(tokenDto);
     }
