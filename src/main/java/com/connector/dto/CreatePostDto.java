@@ -14,7 +14,6 @@ public class CreatePostDto {
         return Post.builder()
                 .userId(userId)
                 .content(text)
-                .createdAt(LocalDateTime.now())
                 .likes(new ArrayList<>())
                 .comments(new ArrayList<>())
                 .build();

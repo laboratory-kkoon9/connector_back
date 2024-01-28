@@ -44,6 +44,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public PostDetailResponseDto getPostById(Long postId) {
         GetPostResponseModel post = postRepository.getPostById(GetPostRequestModel.builder()
                 .postId(postId)
