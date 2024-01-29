@@ -17,7 +17,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping
+    @PostMapping
     public List<ProfileDto> profile() {
 
         return profileService.profile();
@@ -35,6 +35,23 @@ public class ProfileController {
         return profileService.profileDetail(userId);
     }
 
+    @PutMapping("/experience")
+    public ProfileDetailDto profileExperience() {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+
+
+        return profileService.profileExperience(userId);
+    }
+
+    @PutMapping("/education")
+    public ProfileDetailDto profileEducation() {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+
+
+        return profileService.profileExperience(userId);
+    }
 
 
 

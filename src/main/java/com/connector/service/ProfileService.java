@@ -3,6 +3,7 @@ package com.connector.service;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
+import com.connector.dto.GetExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.global.exception.BadRequestException;
@@ -99,6 +100,44 @@ public class ProfileService {
         return profileDetailDto;
     }
 
+
+    public ProfileDetailDto profileExperience(Long userId) {
+
+        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+
+        ProfileDetailDto profileDetailDto;
+        profileDetailDto = ProfileDetailDto.builder()
+                .experiences(profile.getExperiences())
+                .build();
+
+        return profileDetailDto;
+    }
+
+    public ProfileDetailDto profileEducation(Long userId) {
+
+        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+
+        ProfileDetailDto profileDetailDto;
+        profileDetailDto = ProfileDetailDto.builder()
+                .educations(profile.getEducations())
+                .build();
+
+        return profileDetailDto;
+    }
 
 
 }
