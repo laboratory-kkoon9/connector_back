@@ -1,12 +1,14 @@
 package com.connector.service;
 
+import com.connector.domain.Experience;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
-import com.connector.dto.GetExperienceDto;
+import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.global.exception.BadRequestException;
+import com.connector.repository.ExperienceRepository;
 import com.connector.repository.ProfileRepository;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final ExperienceRepository experienceRepository;
 
 
     // 프로필 전체 조회 메소드
@@ -101,7 +104,7 @@ public class ProfileService {
     }
 
 
-    public ProfileDetailDto profileExperience(Long userId) {
+    public void profileExperience(Long userId, ExperienceDto experienceDto) {
 
         /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
         User user = userRepository.findById(userId).orElseThrow(
@@ -112,32 +115,10 @@ public class ProfileService {
         );
 
 
-        ProfileDetailDto profileDetailDto;
-        profileDetailDto = ProfileDetailDto.builder()
-                .experiences(profile.getExperiences())
-                .build();
-
-        return profileDetailDto;
+        profile.addExperience(experienceDto.toEntity());
     }
 
-    public ProfileDetailDto profileEducation(Long userId) {
 
-        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
-        );
-        Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
-        );
-
-
-        ProfileDetailDto profileDetailDto;
-        profileDetailDto = ProfileDetailDto.builder()
-                .educations(profile.getEducations())
-                .build();
-
-        return profileDetailDto;
-    }
 
 
 }

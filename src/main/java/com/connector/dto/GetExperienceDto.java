@@ -33,8 +33,8 @@ public class GetExperienceDto {
                 .company(experience.getCompany())
                 .position(experience.getPosition())
                 .description(experience.getDescription())
-                .from(experience.getStartDate())
-                .to(experience.getEndDate())
+                .from(experience.getFrom())
+                .to(experience.getTo())
                 .build();
     }
 }

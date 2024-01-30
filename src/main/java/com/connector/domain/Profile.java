@@ -72,5 +72,19 @@ public class Profile {
         this.educations = educations;
     }
 
+    public void addEducation(Education education) {
+        this.educations.add(education);
+        if (education.getProfile() != this) {
+            education.setProfile(this);
+        }
+    }
+
+    public void addExperience(Experience experience) {
+        this.experiences.add(experience);
+        if (experience.getProfile() != this) {
+            experience.setProfile(this);
+        }
+    }
+
 
 }
