@@ -58,6 +58,20 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Education> educations = new ArrayList<>();
 
+    public void addEducation(Education education) {
+        this.educations.add(education);
+        if (education.getProfile() != this) {
+            education.setProfile(this);
+        }
+    }
+
+    public void addExperience(Experience experience) {
+        this.experiences.add(experience);
+        if (experience.getProfile() != this) {
+            experience.setProfile(this);
+        }
+    }
+
     @Builder // 모든 필드의 매개변수를 생성자로 만들어 필요한 매개변수만 가져와 사용 할 수 있다.
     public Profile(Long id, User user, String company, String location, String bio, String website, List<Skill> skills,
                    List<Experience> experiences, List<Education> educations) {
@@ -72,19 +86,6 @@ public class Profile {
         this.educations = educations;
     }
 
-    public void addEducation(Education education) {
-        this.educations.add(education);
-        if (education.getProfile() != this) {
-            education.setProfile(this);
-        }
-    }
-
-    public void addExperience(Experience experience) {
-        this.experiences.add(experience);
-        if (experience.getProfile() != this) {
-            experience.setProfile(this);
-        }
-    }
 
 
 }

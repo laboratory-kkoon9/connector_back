@@ -106,14 +106,13 @@ public class ProfileService {
 
     public void profileExperience(Long userId, ExperienceDto experienceDto) {
 
-        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
+        /* 로그인 및 프로필 익셉션 체크 */
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
                 () -> new BadRequestException("Not Profile")
         );
-
 
         profile.addExperience(experienceDto.toEntity());
     }
