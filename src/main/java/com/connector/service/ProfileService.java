@@ -4,6 +4,7 @@ import com.connector.domain.Experience;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
+import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
@@ -116,7 +117,18 @@ public class ProfileService {
 
         profile.addExperience(experienceDto.toEntity());
     }
+    public void profileEducation(Long userId, EducationDto educationDto) {
 
+        /* 로그인 및 프로필 익셉션 체크 */
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+        profile.addEducation(educationDto.toEntity());
+    }
 
 
 

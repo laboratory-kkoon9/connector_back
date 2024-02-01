@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class GetEducationDto {
     private Long id;
     private String school;
-    private int degree;
+    private String degree;
     private String fieldOfStudy;
     private LocalDate from;
     private LocalDate to;
@@ -18,7 +18,7 @@ public class GetEducationDto {
 
 
     @Builder
-    public GetEducationDto(Long id, String school, int degree, String fieldOfStudy
+    public GetEducationDto(Long id, String school, String degree, String fieldOfStudy
             ,LocalDate from, LocalDate to) {
             this.id = id;
             this.school = school;
@@ -35,8 +35,8 @@ public class GetEducationDto {
                 .school(education.getSchool())
                 .degree(education.getDegree())
                 .fieldOfStudy(education.getFieldOfStudy())
-                .from(education.getStartDate())
-                .to(education.getEndDate())
+                .from(education.getFrom())
+                .to(education.getTo())
                 .build();
     }
 }

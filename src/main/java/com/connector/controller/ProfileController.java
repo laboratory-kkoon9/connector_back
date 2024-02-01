@@ -1,6 +1,7 @@
 package com.connector.controller;
 
 import com.connector.domain.Experience;
+import com.connector.dto.EducationDto;
 import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
@@ -43,6 +44,14 @@ public class ProfileController {
         Long userId = context.getUserId();
 
         profileService.profileExperience(userId, experienceDto);
+    }
+
+@PutMapping("/education")
+    public void profileEducation(@RequestBody EducationDto educationDto) {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+
+        profileService.profileEducation(userId, educationDto);
     }
 
 

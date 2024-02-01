@@ -60,7 +60,7 @@ public class Profile {
 
     public void addEducation(Education education) {
         this.educations.add(education);
-        if (education.getProfile() != this) {
+        if(education.getProfile() != this) {
             education.setProfile(this);
         }
     }
