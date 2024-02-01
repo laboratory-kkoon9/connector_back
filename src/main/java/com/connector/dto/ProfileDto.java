@@ -9,8 +9,8 @@ import java.util.List;
 @Builder
 public class ProfileDto {
     private UserDto user;
-    private String company;
     private String location;
+    private String company;
     private String bio;
     private List<String> skills;
 }

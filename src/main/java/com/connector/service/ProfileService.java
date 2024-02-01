@@ -1,99 +1,98 @@
 package com.connector.service;
 
-import com.connector.domain.Profile;
-import com.connector.domain.Skill;
+import com.connector.domain.*;
 import com.connector.dto.*;
+import com.connector.global.exception.NotProfileException;
+import com.connector.global.exception.NotUserException;
 import com.connector.repository.ProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.connector.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileService {
     private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public ProfileService(ProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
-
+    @Transactional(readOnly = true)
     public List<ProfileDto> getAllProfiles() {
         return profileRepository.findAll().stream()
-                .map(this::convertToAllProfilesDto)
+                .map(this::convertToProfileDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProfileDetailDto getProfileByUserId(Long userId) {
-        return profileRepository.findByUserId(userId)
-                .map(this::convertToProfileByUserId)
-                .orElseThrow(() -> new EntityNotFoundException("Profile not found for user id: " + userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotUserException::new);
+
+        Profile profile = profileRepository.findByUserId(user.getId())
+                .orElseThrow(NotProfileException::new);
+
+        return convertToProfileDetailDto(profile);
     }
 
-    private ProfileDto convertToAllProfilesDto(Profile profile) { // convertToDto 메소드는 Profile 엔티티를 입력으로 받아, 이를 ProfileDto 객체로 변환
-        UserDto userDto = UserDto.builder()
-                .id(profile.getUser().getId())
-                .name(profile.getUser().getName())
-                .email(profile.getUser().getEmail())
-                .avatar(profile.getUser().getAvatar())
-                .build();
-
-        List<String> skillNames = profile.getSkills().stream()
-                .map(Skill::getName)
-                .collect(Collectors.toList()); // 스트림의 map 연산을 사용하여 각 Skill 객체의 getName 메소드를 호출하고, 결과를 새 리스트로 수집
-
+    private ProfileDto convertToProfileDto(Profile profile) {
         return ProfileDto.builder()
-                .user(userDto)
-                .company(profile.getCompany())
+                .user(convertToUserDto(profile.getUser()))
                 .location(profile.getLocation())
+                .company(profile.getCompany())
                 .bio(profile.getBio())
-                .skills(skillNames) // 추출된 스킬 이름의 리스트를 ProfileDto의 skills 필드에 할당
+                .skills(profile.getSkills().stream()
+                        .map(Skill::getName)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
-    private ProfileDetailDto convertToProfileByUserId(Profile profile) { // convertToDto 메소드는 Profile 엔티티를 입력으로 받아, 이를 ProfileDetailDto 객체로 변환
-        UserDto userDto = UserDto.builder()
-                .id(profile.getUser().getId())
-                .name(profile.getUser().getName())
-                .email(profile.getUser().getEmail())
-                .avatar(profile.getUser().getAvatar())
-                .build();
-
-        List<String> skillNames = profile.getSkills().stream()
-                .map(Skill::getName)
-                .collect(Collectors.toList()); // 스트림의 map 연산을 사용하여 각 Skill 객체의 getName 메소드를 호출하고, 결과를 새 리스트로 수집
-
-        List<ExperienceDto> experienceDtos = profile.getExperiences().stream()
-                .map(exp -> ExperienceDto.builder()
-                        .company(exp.getCompany())
-                        .position(exp.getPosition())
-                        .description(exp.getDescription())
-                        .startDate(exp.getStartDate())
-                        .endDate(exp.getEndDate())
-                        .build())
-                .collect(Collectors.toList());
-
-
-        List<EducationDto> educationDtos = profile.getEducations().stream()
-                .map(edu -> EducationDto.builder()
-                        .school(edu.getSchool())
-                        .degree(edu.getDegree())
-                        .fieldOfStudy(edu.getFieldOfStudy())
-                        .startDate(edu.getStartDate())
-                        .endDate(edu.getEndDate())
-                        .build())
-                .collect(Collectors.toList());
-
+    private ProfileDetailDto convertToProfileDetailDto(Profile profile) {
         return ProfileDetailDto.builder()
-                .user(userDto)
+                .user(convertToUserDto(profile.getUser()))
+                .bio(profile.getBio())
                 .company(profile.getCompany())
                 .location(profile.getLocation())
-                .bio(profile.getBio())
-                .skills(skillNames) // 추출된 스킬 이름의 리스트를 ProfileDto의 skills 필드에 할당
-                .experience(experienceDtos)
-                .education(educationDtos)
+                .skills(profile.getSkills().stream()
+                        .map(Skill::getName)
+                        .collect(Collectors.toList()))
+                .experiences(extractExperienceDetails(profile))
+                .educations(extractEducationDetails(profile))
                 .build();
+    }
+
+    private UserDto convertToUserDto(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .avatar(user.getAvatar())
+                .build();
+    }
+
+    private List<ExperienceDto> extractExperienceDetails(Profile profile) {
+        return profile.getExperiences().stream()
+                .map(experience -> ExperienceDto.builder()
+                        .company(experience.getCompany())
+                        .position(experience.getPosition())
+                        .description(experience.getDescription())
+                        .startDate(experience.getStartDate())
+                        .endDate(experience.getEndDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<EducationDto> extractEducationDetails(Profile profile) {
+        return profile.getEducations().stream()
+                .map(education -> EducationDto.builder()
+                        .school(education.getSchool())
+                        .degree(education.getDegree())
+                        .fieldOfStudy(education.getFieldOfStudy())
+                        .startDate(education.getStartDate())
+                        .endDate(education.getEndDate())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
