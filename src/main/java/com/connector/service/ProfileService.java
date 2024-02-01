@@ -9,6 +9,7 @@ import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
 import com.connector.global.exception.BadRequestException;
+import com.connector.repository.EducationRepository;
 import com.connector.repository.ExperienceRepository;
 import com.connector.repository.ProfileRepository;
 import com.connector.repository.UserRepository;
@@ -25,6 +26,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ExperienceRepository experienceRepository;
+    private final EducationRepository educationRepository;
 
 
     // 프로필 전체 조회 메소드
@@ -130,6 +132,13 @@ public class ProfileService {
         profile.addEducation(educationDto.toEntity());
     }
 
+    public void profileExperienceDelete(Long experience_id) {
 
+        experienceRepository.deleteById(experience_id);
+    }
+    public void profileEducation_idDelete(Long education_id) {
+
+        educationRepository.deleteById(education_id);
+    }
 
 }

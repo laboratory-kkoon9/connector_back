@@ -46,12 +46,22 @@ public class ProfileController {
         profileService.profileExperience(userId, experienceDto);
     }
 
-@PutMapping("/education")
+    @PutMapping("/education")
     public void profileEducation(@RequestBody EducationDto educationDto) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
 
         profileService.profileEducation(userId, educationDto);
+    }
+    @DeleteMapping("/experience/{experience_id}")
+    public void profileExperience(@PathVariable Long experience_id) {
+
+        profileService.profileExperienceDelete(experience_id);
+    }
+    @DeleteMapping("/education/{education_id}")
+    public void profileEducation_id(@PathVariable Long education_id) {
+
+        profileService.profileEducation_idDelete(education_id);
     }
 
 

@@ -72,6 +72,7 @@ public class Profile {
         }
     }
 
+
     @Builder // 모든 필드의 매개변수를 생성자로 만들어 필요한 매개변수만 가져와 사용 할 수 있다.
     public Profile(Long id, User user, String company, String location, String bio, String website, List<Skill> skills,
                    List<Experience> experiences, List<Education> educations) {
