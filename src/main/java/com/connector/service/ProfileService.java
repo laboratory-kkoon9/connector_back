@@ -1,6 +1,8 @@
 package com.connector.service;
 
-import com.connector.domain.*;
+import com.connector.domain.Profile;
+import com.connector.domain.Skill;
+import com.connector.domain.User;
 import com.connector.dto.*;
 import com.connector.global.exception.NotProfileException;
 import com.connector.global.exception.NotUserException;
