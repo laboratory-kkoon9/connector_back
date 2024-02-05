@@ -15,6 +15,7 @@ import com.connector.repository.ProfileRepository;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,18 @@ public class ProfileService {
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
 
+
+    private void exception(Long userId) {
+        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+
+    }
 
     // 프로필 전체 조회 메소드
     public List<ProfileDto> profile() {
@@ -51,6 +64,8 @@ public class ProfileService {
         }
         return profileDtos;
     }
+
+
 
     // 프로필 상세조회
     public ProfileDetailDto profileDetail(Long userId) {
@@ -106,7 +121,7 @@ public class ProfileService {
         return profileDetailDto;
     }
 
-
+    @Transactional
     public void profileExperience(Long userId, ExperienceDto experienceDto) {
 
         /* 로그인 및 프로필 익셉션 체크 */
@@ -119,6 +134,7 @@ public class ProfileService {
 
         profile.addExperience(experienceDto.toEntity());
     }
+    @Transactional
     public void profileEducation(Long userId, EducationDto educationDto) {
 
         /* 로그인 및 프로필 익셉션 체크 */
@@ -131,11 +147,12 @@ public class ProfileService {
 
         profile.addEducation(educationDto.toEntity());
     }
-
+    @Transactional
     public void profileExperienceDelete(Long experience_id) {
 
         experienceRepository.deleteById(experience_id);
     }
+    @Transactional
     public void profileEducation_idDelete(Long education_id) {
 
         educationRepository.deleteById(education_id);
