@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
@@ -19,6 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenFilter jwtTokenFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -52,9 +52,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtTokenFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class);
 
-        // 필터를 걸어줄 수 있는 순서를 정해주는 메소드.
-//        addFilterBefore()
-        // 필터를 걸어줄 수 있는 역순을 정해주는 메소드
-//        addFilterAfter()
+        // 필터를 걸어줄 수 있는 순서를 정해 주는 메소드
+//        addFilterBefore()     BasicAuthenticationFilter -> jwtTokenFilter -> exceptionHandlerFilter
+        // 필터를 걸어줄 수 있는 역순을 정해 주는 메소드
+//        addFilterAfter()      BasicAuthenticationFilter <- jwtTokenFilter <- exceptionHandlerFilter
+
+
+
     }
 }

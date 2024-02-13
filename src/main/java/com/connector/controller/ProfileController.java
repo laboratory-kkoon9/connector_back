@@ -1,13 +1,15 @@
 package com.connector.controller;
 
+import com.connector.domain.Experience;
+import com.connector.dto.EducationDto;
+import com.connector.dto.ExperienceDto;
 import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.ProfileDto;
+import com.connector.global.context.TokenContext;
+import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping
+    @PostMapping
     public List<ProfileDto> profile() {
 
         return profileService.profile();
@@ -28,4 +30,40 @@ public class ProfileController {
 
         return profileService.profileDetail(userId);
     }
+    @GetMapping("/me")
+    public ProfileDetailDto profileMe() {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+
+        return profileService.profileDetail(userId);
+    }
+
+    @PutMapping("/experience")
+    public void profileExperience(@RequestBody ExperienceDto experienceDto) {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+
+        profileService.profileExperience(userId, experienceDto);
+    }
+
+    @PutMapping("/education")
+    public void profileEducation(@RequestBody EducationDto educationDto) {
+        TokenContext context = TokenContextHolder.getContext();
+        Long userId = context.getUserId();
+
+        profileService.profileEducation(userId, educationDto);
+    }
+    @DeleteMapping("/experience/{experience_id}")
+    public void profileExperience(@PathVariable Long experience_id) {
+
+        profileService.profileExperienceDelete(experience_id);
+    }
+    @DeleteMapping("/education/{education_id}")
+    public void profileEducation_id(@PathVariable Long education_id) {
+
+        profileService.profileEducation_idDelete(education_id);
+    }
+
+
+
 }
