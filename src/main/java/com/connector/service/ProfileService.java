@@ -41,9 +41,25 @@ public class ProfileService {
 
 
     }
+    // my프로필 수정
+    @Transactional
+    public ProfileDetailDto myProfileUpdate(ProfileDetailDto profileDetailDto, Long userId) {
+        /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BadRequestException("Not User")
+        );
+        Profile profile = profileRepository.findByUser(user).orElseThrow(
+                () -> new BadRequestException("Not Profile")
+        );
+
+        Profile pro = profileDetailDto.toEntity(profileDetailDto);
+
+        return profileRepository.save();
+
+    }
 
     // 프로필 전체 조회 메소드
-    public List<ProfileDto> profile() {
+    public List<ProfileDto> profile(Long userId) {
 
         // 유저 전체 데이터 불러오기
         List<Profile> profiles = profileRepository.findAll();

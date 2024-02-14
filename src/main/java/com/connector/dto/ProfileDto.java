@@ -1,10 +1,13 @@
 package com.connector.dto;
 
+import com.connector.domain.Profile;
+import com.connector.domain.Skill;
 import com.connector.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ProfileDto {
@@ -24,4 +27,13 @@ public class ProfileDto {
         this.bio = bio;
         this.skills = skills;
     }
+
+//    public Profile toEntity() {
+//        return Profile.builder()
+//                .company(this.company)
+//                .location(this.location)
+//                .bio(this.location)
+//                .skills()
+//                .build();
+//    }
 }

@@ -58,6 +58,14 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Education> educations = new ArrayList<>();
 
+    public Profile(String company, String location, String bio, String website, List<Skill> skills) {
+        this.company = company;
+        this.location = location;
+        this.bio = bio;
+        this.website = website;
+        this.skills = skills;
+    }
+
     public void addEducation(Education education) {
         this.educations.add(education);
         if(education.getProfile() != this) {
