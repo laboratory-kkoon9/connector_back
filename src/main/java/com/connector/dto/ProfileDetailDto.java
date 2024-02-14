@@ -12,39 +12,32 @@ public class ProfileDetailDto {
     private String company;
     private String location;
     private String bio;
-    private String status;
     private String website;
     private List<String> skills;
     private List<GetExperienceDto> experience;
     private List<GetEducationDto> education;
 
     @Builder
-    public ProfileDetailDto(User user, String company, String location, String bio,String status ,String website,
+    public ProfileDetailDto(User user, String company, String location, String bio, String website,
                             List<Skill> skills, List<Experience> experiences,
                             List<Education> educations) {
         this.user = user;
         this.company = company;
         this.location = location;
         this.bio = bio;
-        this.status = status;
         this.website = website;
         this.skills = skills.stream().map(Skill::getName).collect(Collectors.toList());
         this.experience = experiences.stream().map(GetExperienceDto::of).collect(Collectors.toList());
         this.education = educations.stream().map(GetEducationDto::of).collect(Collectors.toList());
     }
 
-    public Profile toEntity(User user, String company, String location, String bio,String status ,String website,
-                            List<Skill> skills, List<Experience> experiences,
-                            List<Education> educations) {
+    public Profile toEntity() {
         return Profile.builder()
                 .user(user)
                 .company(company)
                 .location(location)
                 .bio(bio)
                 .website(website)
-                .skills(skills)
-                .experiences(experiences)
-                .educations(educations)
                 .build();
     }
 }

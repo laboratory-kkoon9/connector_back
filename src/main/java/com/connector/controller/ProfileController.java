@@ -2,10 +2,7 @@ package com.connector.controller;
 
 import com.connector.domain.Experience;
 import com.connector.domain.Profile;
-import com.connector.dto.EducationDto;
-import com.connector.dto.ExperienceDto;
-import com.connector.dto.ProfileDetailDto;
-import com.connector.dto.ProfileDto;
+import com.connector.dto.*;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.ProfileService;
@@ -22,18 +19,18 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping
-    public List<ProfileDto> profile() {
+    public List<ProfileDto> profiles() {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
 
         return profileService.profile(userId);
     }
     @PostMapping
-    public ProfileDetailDto profileUpdate(@RequestBody ProfileDetailDto profileDetailDto ) {
+    public void profileUpdate(@RequestBody ProfileUpdateDto profileUpdateDto) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
 
-        return profileService.myProfileUpdate(profileDetailDto, userId);
+        profileService.myProfileUpdate(profileUpdateDto, userId);
     }
     @GetMapping("/user/{userId}")
     public ProfileDetailDto profileDetail(@PathVariable Long userId) {

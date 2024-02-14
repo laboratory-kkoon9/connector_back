@@ -1,5 +1,6 @@
 package com.connector.domain;
 
+import com.connector.dto.ProfileUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,9 @@ public class Profile {
     @Column(name = "bio")
     private String bio;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "website")
     private String website;
 
@@ -58,13 +62,7 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Education> educations = new ArrayList<>();
 
-    public Profile(String company, String location, String bio, String website, List<Skill> skills) {
-        this.company = company;
-        this.location = location;
-        this.bio = bio;
-        this.website = website;
-        this.skills = skills;
-    }
+
 
     public void addEducation(Education education) {
         this.educations.add(education);
@@ -80,21 +78,31 @@ public class Profile {
         }
     }
 
+    public void updateUser(ProfileUpdateDto profileUpdateDto) {
+        this.company = profileUpdateDto.getCompany();
+        this.website = profileUpdateDto.getWebsite();
+        this.location  = profileUpdateDto.getLocation();
+        this.bio  = profileUpdateDto.getBio();
+        this.status  = profileUpdateDto.getStatus();
+//        this.skills  = profileUpdateDto.getSkills();
+    }
+
 
     @Builder // 모든 필드의 매개변수를 생성자로 만들어 필요한 매개변수만 가져와 사용 할 수 있다.
-    public Profile(Long id, User user, String company, String location, String bio, String website, List<Skill> skills,
+    public Profile(Long id, User user, String company, String location, String bio, String status,String website, List<Skill> skills,
                    List<Experience> experiences, List<Education> educations) {
         this.id = id;
         this.user = user;
         this.company = company;
         this.location = location;
         this.bio = bio;
+        this.status = status;
         this.website = website;
         this.skills = skills;
         this.experiences = experiences;
         this.educations = educations;
     }
 
-
+    // 스플릿 스킬 구현  this.status = status;
 
 }

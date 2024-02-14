@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {   // extends JpaRepository<엔티티, pk타입>
     Optional<Profile> findByUser(User user);
+
 }

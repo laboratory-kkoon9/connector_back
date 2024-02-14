@@ -4,10 +4,7 @@ import com.connector.domain.Experience;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
-import com.connector.dto.EducationDto;
-import com.connector.dto.ExperienceDto;
-import com.connector.dto.ProfileDetailDto;
-import com.connector.dto.ProfileDto;
+import com.connector.dto.*;
 import com.connector.global.exception.BadRequestException;
 import com.connector.repository.EducationRepository;
 import com.connector.repository.ExperienceRepository;
@@ -19,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,18 +41,19 @@ public class ProfileService {
     }
     // my프로필 수정
     @Transactional
-    public ProfileDetailDto myProfileUpdate(ProfileDetailDto profileDetailDto, Long userId) {
+    public void myProfileUpdate(ProfileUpdateDto profileUpdateDto, Long userId) {
         /* 이러한 부분들이 뭔가 했는데 다 익셉션 이군요! */
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BadRequestException("Not User")
         );
-        Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
-        );
 
-        Profile pro = profileDetailDto.toEntity(profileDetailDto);
+        Optional<Profile> profile = profileRepository.findByUser(user);
 
-        return profileRepository.save();
+        if(profile.isPresent()) {
+            profile.get().updateUser(profileUpdateDto);
+        } else {
+            profileRepository.save(profileUpdateDto.toEntity(user));
+        }
 
     }
 
