@@ -1,0 +1,1 @@
+INSERT INTO users(id, avatar, email, name, password) VALUES (1, '', 'jjj123@naver.com', 'John', '123123');

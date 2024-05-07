@@ -52,10 +52,7 @@ public class ProfileService {
 
     @Transactional(readOnly = true)
     public ProfileDetailDto getProfileById(final Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
-        );
-        Profile profile = profileRepository.findByUser(user).orElseThrow(
+        Profile profile = profileRepository.findByUserId(userId).orElseThrow(
                 () -> new BadRequestException("Not Profile")
         );
 
