@@ -21,6 +21,11 @@ public class UserService {
 
     @Transactional
     public TokenResponseDto register(RegisterDto registerDto) {
+        String email = registerDto.getEmail();
+        if (!email.contains("@")) {
+            throw new BadRequestException("email은 이메일 형식이어야 합니다.");
+        }
+
         if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new BadRequestException("User already exists");
         }
