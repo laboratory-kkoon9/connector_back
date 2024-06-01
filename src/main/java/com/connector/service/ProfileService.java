@@ -84,7 +84,6 @@ public class ProfileService {
             profile.update(profileDto);
 
             if(profileDto.getSkills() != null) {
-                // skillRepository.deleteAllByProfile(profile);
                 changeSkills(profileDto, profile);
             }
         } else {
@@ -127,7 +126,6 @@ public class ProfileService {
         Profile profile = profileRepository.findByUser(user).orElseThrow(
                 () -> new BadRequestException("Not Profile")
         );
-
         profile.addEducation(educationDto.toEntity());
     }
 
