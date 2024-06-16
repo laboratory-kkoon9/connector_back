@@ -10,4 +10,9 @@ public class LoginDto {
     private String email;
     @Schema(description = "비밀번호")
     private String password;
+
+    public LoginDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

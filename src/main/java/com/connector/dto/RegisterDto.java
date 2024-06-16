@@ -12,4 +12,10 @@ public class RegisterDto {
     private String email;
     @Schema(description = "유저의 비밀번호")
     private String password;
+
+    public RegisterDto(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 }
