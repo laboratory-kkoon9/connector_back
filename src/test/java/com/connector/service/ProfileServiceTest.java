@@ -1,8 +1,8 @@
 package com.connector.service;
 
-import com.connector.domain.Profile;
-import com.connector.domain.User;
 import com.connector.dto.ProfileDetailDto;
+import com.connector.global.config.JpaAuditConfig;
+import com.connector.global.config.QuerydslConfig;
 import com.connector.global.exception.BadRequestException;
 import com.connector.repository.EducationRepository;
 import com.connector.repository.ExperienceRepository;
@@ -14,20 +14,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 @DataJpaTest
 @ActiveProfiles("test")
+@Import({QuerydslConfig.class, JpaAuditConfig.class})
 @Sql("classpath:/sql/profile.sql")
 class ProfileServiceTest {
     @Autowired
@@ -50,18 +47,6 @@ class ProfileServiceTest {
     @BeforeEach
     void init() {
         profileService = new ProfileService(profileRepository, userRepository, experienceRepository, educationRepository, githubClient);
-    }
-
-    @Test
-    @DisplayName("유효하지 않은 userId에 대해서는 BadRequestException 예외를 던진다.")
-    void profile_detail_test1() {
-        // given
-        Long userId = 3L;
-
-        // when, then
-        assertThatThrownBy(() -> profileService.getProfileById(userId))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Not User");
     }
 
     @Test

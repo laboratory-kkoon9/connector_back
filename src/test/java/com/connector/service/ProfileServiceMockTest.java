@@ -51,26 +51,11 @@ class ProfileServiceMockTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 userId에 대해서는 BadRequestException 예외를 던진다.")
-    void profile_detail_test1() {
-        // given
-        Long userId = 1L;
-        given(userRepository.findById(any())).willReturn(Optional.empty());
-
-        // when, then
-        assertThatThrownBy(() -> profileService.getProfileById(userId))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Not User");
-    }
-
-    @Test
     @DisplayName("유효하지 않은 user에 대해서는 BadRequestException 예외를 던진다.")
     void profile_detail_test2() {
         // given
         Long userId = 1L;
-        User user = User.builder().id(userId).build();
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
-        given(profileRepository.findByUser(any())).willReturn(Optional.empty());
+        given(profileRepository.findByUserId(any())).willReturn(Optional.empty());
 
         // when, then
         assertThatThrownBy(() -> profileService.getProfileById(userId))
@@ -95,8 +80,7 @@ class ProfileServiceMockTest {
                 .experiences(new ArrayList<>())
                 .educations(new ArrayList<>())
                 .build();
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
-        given(profileRepository.findByUser(any())).willReturn(Optional.of(profile));
+        given(profileRepository.findByUserId(any())).willReturn(Optional.of(profile));
 
         // when
         ProfileDetailDto result = profileService.getProfileById(userId);

@@ -1,1 +1,1 @@
-INSERT INTO users(id, avatar, email, name, password) VALUES (1, '', 'jjj123@naver.com', 'John', '123123');
+INSERT INTO users(id, avatar, email, name, password, activated, created_at, updated_at) VALUES (1, '', 'jjj123@naver.com', 'John', '123123', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
