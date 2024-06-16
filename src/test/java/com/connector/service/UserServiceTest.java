@@ -1,7 +1,9 @@
 package com.connector.service;
 
 import com.connector.domain.User;
+import com.connector.dto.LoginDto;
 import com.connector.dto.RegisterDto;
+import com.connector.dto.TokenResponseDto;
 import com.connector.global.config.JpaAuditConfig;
 import com.connector.global.config.QuerydslConfig;
 import com.connector.global.exception.BadRequestException;
@@ -20,6 +22,8 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @DataJpaTest
 @Import({QuerydslConfig.class, JpaAuditConfig.class})
@@ -75,5 +79,51 @@ class UserServiceTest {
                 () -> assertThat(result.getPassword()).isEqualTo(password)
         );
 
+    }
+
+    @DisplayName("없는 이메일로 로그인을 하게 되면 BadRequestException 예외를 던진다.")
+    @Test
+    void login_test1() {
+        // given
+        String email = "jjj1234@naver.com";
+        String password = "123123";
+        LoginDto loginDto = new LoginDto(email, password);
+
+        // when, then
+        assertThatThrownBy(() -> userService.login(loginDto))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Invalid Credentials");
+    }
+
+    @DisplayName("비밀번호가 틀리면 BadRequestException 예외를 던진다.")
+    @Test
+    void login_test2() {
+        // given
+        String email = "jjj123@naver.com";
+        String password = "1231234";
+        LoginDto loginDto = new LoginDto(email, password);
+
+        // when, then
+        assertThatThrownBy(() -> userService.login(loginDto))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("비밀번호가 올바르지 않습니다.");
+    }
+
+    @DisplayName("로그인을 성공하면 토큰이 리턴된다.")
+    @Test
+    void login_test3() {
+        // given
+        String email = "jjj123@naver.com";
+        String password = "123123";
+        String token = "token";
+
+        LoginDto loginDto = new LoginDto(email, password);
+        given(tokenManager.generateToken(any())).willReturn(new TokenResponseDto(token));
+
+        // when
+        TokenResponseDto result = userService.login(loginDto);
+
+        // then
+        assertThat(result.getToken()).isEqualTo(token);
     }
 }
