@@ -30,6 +30,7 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                 .antMatchers(
+                    "/ping",
                         "/",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
