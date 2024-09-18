@@ -1,7 +1,6 @@
 package com.connector.controller;
 
 import com.connector.dto.LoginDto;
-import com.connector.dto.LoginResponseDto;
 import com.connector.dto.TokenResponseDto;
 import com.connector.dto.UserDto;
 import com.connector.global.context.TokenContext;
