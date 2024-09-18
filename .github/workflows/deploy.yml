@@ -44,5 +44,5 @@ jobs:
         run: aws deploy create-deployment
           --application-name connector-deploy-app
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name Production
+          --deployment-group-name connector-deploy-group
           --s3-location bucket=connector-bucket1,bundleType=tgz,key=$GITHUB_SHA.tar.gz
