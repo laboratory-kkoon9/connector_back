@@ -20,5 +20,5 @@ jobs:
             cd /home/ubuntu/connector_back
             git pull origin master
             ./gradlew clean build
-            sudo fuser -k -n tcp 80 || true  
+            sudo fuser -k -n tcp 8080 || true  
             nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
