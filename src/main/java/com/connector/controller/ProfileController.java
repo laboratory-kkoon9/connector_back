@@ -8,6 +8,7 @@ import com.connector.dto.ProfileDto;
 import com.connector.dto.UpsertProfileDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
+import com.connector.service.ImageService;
 import com.connector.service.ProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,26 +18,27 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Tag(name="프로필 API")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/profile")
 public class ProfileController {
     private final ProfileService profileService;
-
-    public ProfileController(ProfileService profileService) {
-        this.profileService = profileService;
-    }
+    private final ImageService imageService;
 
     @GetMapping
     public List<ProfileDto> getProfiles() {
@@ -111,5 +113,10 @@ public class ProfileController {
             @PathVariable(value = "github_id") final String gitHubId
     ) {
         return profileService.getGitRepositories(gitHubId);
+    }
+
+    @PostMapping("/image")
+    public void saveProfileImage(@ModelAttribute(name = "file") MultipartFile file) {
+        imageService.saveImage(file);
     }
 }

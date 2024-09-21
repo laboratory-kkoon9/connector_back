@@ -61,6 +61,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
+        if (new AntPathRequestMatcher("/api/profile/image", HttpMethod.POST.toString()).matches(request)) {
+            return true;
+        }
+
         if (new AntPathRequestMatcher("/api/profile/user/**", HttpMethod.GET.toString()).matches(request)) {
             return true;
         }

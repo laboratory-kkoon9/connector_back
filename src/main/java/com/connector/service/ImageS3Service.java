@@ -21,6 +21,7 @@ public class ImageS3Service implements ImageService {
     private final AmazonS3Client amazonS3Client;
 
     @Transactional
+    @Override
     public void saveImage(MultipartFile multipartFile) {
         String originalName = multipartFile.getOriginalFilename();
         String filename = getFileName(originalName);
@@ -33,6 +34,7 @@ public class ImageS3Service implements ImageService {
             amazonS3Client.putObject(bucketName, filename, multipartFile.getInputStream(), objectMetadata);
 
             String accessUrl = amazonS3Client.getUrl(bucketName, filename).toString();
+            System.out.println(accessUrl);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
