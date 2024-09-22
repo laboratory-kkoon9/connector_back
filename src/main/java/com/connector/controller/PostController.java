@@ -7,7 +7,6 @@ import com.connector.dto.PostDetailResponseDto;
 import com.connector.dto.PostResponseDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
-import com.connector.repository.model.GetPostRequestModel;
 import com.connector.service.PostService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
