@@ -42,7 +42,7 @@ jobs:
 
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
         run: aws deploy create-deployment
-          --application-name connector-deploy-app
+          --application-name connector-server
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name connector-deploy-group
+          --deployment-group-name Develop
           --s3-location bucket=connector-bucket1,bundleType=tgz,key=$GITHUB_SHA.tar.gz
