@@ -40,14 +40,12 @@ public class ImageS3Service implements ImageService {
         }
     }
 
-    // 이미지 파일의 확장자를 추출하는 메소드
     public String extractExtension(String originName) {
         int index = originName.lastIndexOf('.');
 
         return originName.substring(index, originName.length());
     }
 
-    // 이미지 파일의 이름을 저장하기 위한 이름으로 변환하는 메소드
     public String getFileName(String originName) {
         return UUID.randomUUID() + "." + extractExtension(originName);
     }
