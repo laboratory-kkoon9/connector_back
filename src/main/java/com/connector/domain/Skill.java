@@ -44,7 +44,6 @@ public class Skill {
         }
         this.profile = profile;
 
-        //무한루프에 빠지지 않도록 체크
         if(!profile.getSkills().contains(this)) {
             profile.getSkills().add(this);
         }
