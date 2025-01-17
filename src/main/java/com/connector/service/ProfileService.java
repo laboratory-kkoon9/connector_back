@@ -37,15 +37,14 @@ public class ProfileService {
     public List<ProfileDto> getProfiles() {
         List<Profile> profiles = profileRepository.findAll();
         List<ProfileDto> profileDtos = new ArrayList<>();
-        for (int i = 0; i < profiles.size(); i++) {
-            Profile profile = profiles.get(i);
+        for (Profile profile : profiles) {
             profileDtos.add(ProfileDto.builder()
-                    .user(profile.getUser())
-                    .bio(profile.getBio())
-                    .company(profile.getCompany())
-                    .location(profile.getLocation())
-                    .skills(profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList()))
-                    .build());
+                .user(profile.getUser())
+                .bio(profile.getBio())
+                .company(profile.getCompany())
+                .location(profile.getLocation())
+                .skills(profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList()))
+                .build());
         }
         return profileDtos;
     }
