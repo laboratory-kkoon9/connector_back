@@ -26,7 +26,7 @@ import java.util.List;
 @Table(name = "posts")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -37,9 +37,6 @@ public class Post {
 
     @Column(name = "content")
     private String content;
-    @Column(name = "created_at")
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
