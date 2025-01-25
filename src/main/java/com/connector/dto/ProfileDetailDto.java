@@ -42,7 +42,7 @@ public class ProfileDetailDto {
         this.bio = bio;
         this.website = website;
         this.skills = skills.stream().map(Skill::getName).collect(Collectors.toList());
-        this.experience = experiences.stream().map(GetExperienceDto::of).collect(Collectors.toList());
-        this.education = educations.stream().map(GetEducationDto::of).collect(Collectors.toList());
+        this.experience = experiences.stream().map(GetExperienceDto::from).collect(Collectors.toList());
+        this.education = educations.stream().map(GetEducationDto::from).collect(Collectors.toList());
     }
 }
