@@ -3,12 +3,7 @@ package com.connector.service;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
-import com.connector.dto.EducationDto;
-import com.connector.dto.ExperienceDto;
-import com.connector.dto.GithubResponseItemDto;
-import com.connector.dto.ProfileDetailDto;
-import com.connector.dto.ProfileDto;
-import com.connector.dto.UpsertProfileDto;
+import com.connector.dto.*;
 import com.connector.global.exception.BadRequestException;
 import com.connector.global.util.TextParser;
 import com.connector.repository.EducationRepository;
@@ -39,7 +34,7 @@ public class ProfileService {
         List<ProfileDto> profileDtos = new ArrayList<>();
         for (Profile profile : profiles) {
             profileDtos.add(ProfileDto.builder()
-                .user(profile.getUser())
+                .user(UserDto.from(profile.getUser()))
                 .bio(profile.getBio())
                 .company(profile.getCompany())
                 .location(profile.getLocation())
