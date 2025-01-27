@@ -6,12 +6,13 @@ import com.connector.dto.UserDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +21,16 @@ public class AuthController {
     private final UserService userService;
 
     @GetMapping
+    @Operation(summary = "내 유저 정보 API", description = "나의 유저 정보를 조회한다.<br>response : UserDto")
+    @ApiResponse(
+        responseCode = "200",
+        content = {
+            @Content(
+                mediaType = "application/json",
+                array = @ArraySchema(schema = @Schema(implementation = UserDto.class))
+            )
+        }
+    )
     public UserDto getAuth() {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
@@ -27,6 +38,16 @@ public class AuthController {
     }
 
     @PostMapping
+    @Operation(summary = "로그인 API", description = "로그인을 한다.<br>request : LoginDto <br>response : TokenResponseDto")
+    @ApiResponse(
+        responseCode = "200",
+        content = {
+            @Content(
+                mediaType = "application/json",
+                array = @ArraySchema(schema = @Schema(implementation = TokenResponseDto.class))
+            )
+        }
+    )
     public TokenResponseDto login(@RequestBody LoginDto loginDto) {
         return userService.login(loginDto);
     }

@@ -1,6 +1,5 @@
 package com.connector.controller;
 
-import com.connector.dto.ProfileDetailDto;
 import com.connector.dto.RegisterDto;
 import com.connector.dto.TokenResponseDto;
 import com.connector.service.UserService;
