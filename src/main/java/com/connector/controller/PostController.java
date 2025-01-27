@@ -8,6 +8,10 @@ import com.connector.dto.PostResponseDto;
 import com.connector.global.context.TokenContext;
 import com.connector.global.context.TokenContextHolder;
 import com.connector.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name="게시물 API")
+@Tag(name = "게시물 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
@@ -42,21 +46,30 @@ public class PostController {
 
     @GetMapping("/{post_id}")
     public PostDetailResponseDto getPostById(
-            @PathVariable(value = "post_id") final Long postId
+        @PathVariable(value = "post_id") final Long postId
     ) {
         return postService.getPostById(postId);
     }
 
     @DeleteMapping("/{post-id}")
+    @Operation(
+        summary = "게시물 삭제 API",
+        description = "나의 게시물을 삭제한다."
+    )
+    @ApiResponse(
+        responseCode = "200"
+    )
     public void deletePost(
-            @PathVariable(value = "post-id") final Long postId
+        @Parameter(name = "post-id", description = "게시물 ID", in = ParameterIn.PATH)
+        @PathVariable(value = "post-id") final Long postId
     ) {
         postService.deletePost(postId);
     }
 
     @PutMapping("/like/{post-id}")
     public void likePost(
-            @PathVariable(value = "post-id") final Long postId
+        @Parameter(name = "post-id", description = "게시물 ID", in = ParameterIn.PATH)
+        @PathVariable(value = "post-id") final Long postId
     ) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
@@ -65,7 +78,8 @@ public class PostController {
 
     @PutMapping("/unlike/{post-id}")
     public void unlikePost(
-            @PathVariable(value = "post-id") final Long postId
+        @Parameter(name = "post-id", description = "게시물 ID", in = ParameterIn.PATH)
+        @PathVariable(value = "post-id") final Long postId
     ) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
@@ -74,8 +88,9 @@ public class PostController {
 
     @PostMapping("/comment/{post-id}")
     public List<CommentResponseDto> addComment(
-            @PathVariable(value = "post-id") final Long postId,
-            @RequestBody CreateCommentDto commentDto
+        @Parameter(name = "post-id", description = "게시물 ID", in = ParameterIn.PATH)
+        @PathVariable(value = "post-id") final Long postId,
+        @RequestBody CreateCommentDto commentDto
     ) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
@@ -84,8 +99,10 @@ public class PostController {
 
     @DeleteMapping("/comment/{post-id}/{comment-id}")
     public void removeComment(
-            @PathVariable(value = "post-id") final Long postId,
-            @PathVariable(value = "comment-id") final Long commentId
+        @Parameter(name = "post-id", description = "게시물 ID", in = ParameterIn.PATH)
+        @PathVariable(value = "post-id") final Long postId,
+        @Parameter(name = "comment-id", description = "댓글 ID", in = ParameterIn.PATH)
+        @PathVariable(value = "comment-id") final Long commentId
     ) {
         TokenContext context = TokenContextHolder.getContext();
         Long userId = context.getUserId();
