@@ -46,6 +46,7 @@ public class PostController {
 
     @GetMapping("/{post_id}")
     public PostDetailResponseDto getPostById(
+        @Parameter(name = "post-id", description = "게시물 ID", in = ParameterIn.PATH)
         @PathVariable(value = "post_id") final Long postId
     ) {
         return postService.getPostById(postId);
