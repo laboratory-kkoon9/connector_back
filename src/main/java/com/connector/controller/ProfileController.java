@@ -62,7 +62,7 @@ public class ProfileController {
         content = {
             @Content(
                 mediaType = "application/json",
-                array = @ArraySchema(schema = @Schema(implementation = ProfileDetailDto.class))
+                schema = @Schema(implementation = ProfileDetailDto.class)
             )
         }
     )
@@ -80,7 +80,7 @@ public class ProfileController {
         content = {
             @Content(
                 mediaType = "application/json",
-                array = @ArraySchema(schema = @Schema(implementation = ProfileDetailDto.class))
+                schema = @Schema(implementation = ProfileDetailDto.class)
             )
         }
     )
