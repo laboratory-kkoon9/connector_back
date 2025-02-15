@@ -1,6 +1,7 @@
 package com.connector.domain;
 
 import com.connector.dto.UpsertProfileDto;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "profiles")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Profile {
     @Id

@@ -1,5 +1,6 @@
 package com.connector.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "skills")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

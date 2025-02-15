@@ -1,5 +1,6 @@
 package com.connector.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(name = "experiences")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
