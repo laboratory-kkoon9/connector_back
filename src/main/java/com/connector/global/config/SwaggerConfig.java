@@ -23,13 +23,12 @@ public class SwaggerConfig {
     }
 
     public OpenApiCustomiser buildSecurityOpenApi() {
-        return OpenApi -> OpenApi.addSecurityItem(new SecurityRequirement().addList("jwt token"))
-                .getComponents()
-                .addSecuritySchemes("jwt token", new SecurityScheme()
-                        .name("Authorization")
-                        .type(SecurityScheme.Type.HTTP)
-                        .in(SecurityScheme.In.HEADER)
-                        .bearerFormat("JWT")
-                        .scheme("bearer"));
+        return openApi -> openApi.addSecurityItem(new SecurityRequirement().addList("x-auth-token"))
+            .getComponents()
+            .addSecuritySchemes("x-auth-token", new SecurityScheme()
+                .name("x-auth-token") // 변경된 헤더명
+                .type(SecurityScheme.Type.APIKEY) // HTTP → APIKEY 변경
+                .in(SecurityScheme.In.HEADER));
     }
+
 }
