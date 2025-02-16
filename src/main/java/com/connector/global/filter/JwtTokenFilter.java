@@ -69,6 +69,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
+        if (new AntPathRequestMatcher("/api/follow/user/**", HttpMethod.GET.toString()).matches(request)) {
+            return true;
+        }
+
         if (new AntPathRequestMatcher("/api/profile/github/**", HttpMethod.GET.toString()).matches(request)) {
             return true;
         }
@@ -81,8 +85,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return true;
         }
 
-        return Arrays.asList(exceptURI.split(",").clone())
-                .stream()
+        return Arrays.stream(exceptURI.split(",").clone())
                 .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
     }
 }
