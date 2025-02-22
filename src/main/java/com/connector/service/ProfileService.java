@@ -1,21 +1,20 @@
 package com.connector.service;
 
+import com.connector.domain.Follow;
 import com.connector.domain.Profile;
 import com.connector.domain.Skill;
 import com.connector.domain.User;
 import com.connector.dto.*;
 import com.connector.global.exception.BadRequestException;
 import com.connector.global.util.TextParser;
-import com.connector.repository.EducationRepository;
-import com.connector.repository.ExperienceRepository;
-import com.connector.repository.ProfileRepository;
-import com.connector.repository.UserRepository;
+import com.connector.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,11 +25,16 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
+    private final FollowRepository followRepository;
     private final GithubClient githubClient;
 
     @Transactional(readOnly = true)
     public List<ProfileDto> getProfiles() {
         List<Profile> profiles = profileRepository.findAll();
+        List<Follow> follows = followRepository.findAll();
+        Map<Long, List<Follow>> followings = follows.stream().collect(Collectors.groupingBy(Follow::getUserId));
+        Map<Long, List<Follow>> followers = follows.stream().collect(Collectors.groupingBy(Follow::getTargetUserId));
+
         List<ProfileDto> profileDtos = new ArrayList<>();
         for (Profile profile : profiles) {
             profileDtos.add(ProfileDto.builder()
@@ -39,6 +43,8 @@ public class ProfileService {
                 .company(profile.getCompany())
                 .location(profile.getLocation())
                 .skills(profile.getSkills().stream().map(Skill::getName).collect(Collectors.toList()))
+                .followers(followers)
+                .followings(followings)
                 .build());
         }
         return profileDtos;
@@ -47,37 +53,37 @@ public class ProfileService {
     @Transactional(readOnly = true)
     public ProfileDetailDto getProfileById(final Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
+            () -> new BadRequestException("Not Profile")
         );
 
         ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()
-                .user(profile.getUser())
-                .bio(profile.getBio())
-                .company(profile.getCompany())
-                .website(profile.getWebsite())
-                .location(profile.getLocation())
-                .skills(profile.getSkills())
-                .educations(profile.getEducations())
-                .experiences(profile.getExperiences())
-                .build();
+            .user(profile.getUser())
+            .bio(profile.getBio())
+            .company(profile.getCompany())
+            .website(profile.getWebsite())
+            .location(profile.getLocation())
+            .skills(profile.getSkills())
+            .educations(profile.getEducations())
+            .experiences(profile.getExperiences())
+            .build();
         return profileDetailDto;
     }
 
     @Transactional
     public void upsertProfile(Long userId, UpsertProfileDto profileDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Optional<Profile> optionalProfile = profileRepository.findByUser(user);
 
-        if(optionalProfile.isPresent()) {
+        if (optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
             profile.update(profileDto);
 
-            if(profileDto.getSkills() != null) {
+            if (profileDto.getSkills() != null) {
                 changeSkills(profileDto, profile);
             }
         } else {
@@ -90,7 +96,7 @@ public class ProfileService {
     private void changeSkills(UpsertProfileDto profileDto, Profile profile) {
         List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
         List<Skill> skills = skillNames.stream().map(
-                Skill::of
+            Skill::of
         ).collect(Collectors.toList());
         profile.changeSkills(skills);
     }
@@ -98,10 +104,10 @@ public class ProfileService {
     @Transactional
     public void addExperience(Long userId, ExperienceDto experienceDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
+            () -> new BadRequestException("Not Profile")
         );
 
         profile.addExperience(experienceDto.toEntity());
@@ -115,10 +121,10 @@ public class ProfileService {
     @Transactional
     public void addEducation(Long userId, EducationDto educationDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
+            () -> new BadRequestException("Not Profile")
         );
         profile.addEducation(educationDto.toEntity());
     }
