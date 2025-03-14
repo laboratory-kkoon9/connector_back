@@ -38,8 +38,4 @@ public class User {
         this.password = password;
         this.avatar = avatar;
     }
-
-    public boolean checkPassword(final String password) {
-        return this.password.equals(password);
-    }
 }

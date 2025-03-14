@@ -10,6 +10,7 @@ import com.connector.dto.TokenDto;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final TokenManager tokenManager;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public TokenResponseDto register(RegisterDto registerDto) {
         if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new BadRequestException("User already exists");
         }
-
-        User user = userRepository.save(registerDto.toEntity());
+        User user = userRepository.save(User.builder()
+            .name(registerDto.getName())
+            .email(registerDto.getEmail())
+            .password(passwordEncoder.encode(registerDto.getPassword()))
+            .build()
+        );
         return toTokenResponseDto(user);
     }
 
@@ -54,9 +60,10 @@ public class UserService {
                 () -> new BadRequestException("Invalid Credentials")
         );
 
-        if(!user.checkPassword(loginDto.getPassword())) {
-            throw new BadRequestException("비밀번호가 올바르지 않습니다.");
+        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            throw new BadRequestException("비밀번호가 일치하지 않습니다.");
         }
+
         return toTokenResponseDto(user);
     }
 }
