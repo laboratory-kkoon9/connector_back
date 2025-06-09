@@ -4,8 +4,6 @@ import com.connector.global.token.TokenManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 
 @Slf4j
 @Component
@@ -25,6 +21,8 @@ import java.util.LinkedHashSet;
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final TokenManager tokenManager;
     private final static String AUTHORIZATION_HEADER = "x-auth-token";
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
 
     @Value("${except-uri}")
     private String exceptURI;
@@ -52,40 +50,23 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        String method = request.getMethod();
 
-        if (request.getMethod().equals("OPTIONS")) {
+        if ("OPTIONS".equalsIgnoreCase(method)) {
             return true;
         }
 
-        if (new AntPathRequestMatcher("/api/profile", HttpMethod.GET.toString()).matches(request)) {
-            return true;
-        }
+        if ("GET".equals(method) && pathMatcher.match("/api/profile", path)) return true;
+        if ("POST".equals(method) && pathMatcher.match("/api/profile/image", path)) return true;
+        if ("GET".equals(method) && pathMatcher.match("/api/profile/user/**", path)) return true;
+        if ("GET".equals(method) && pathMatcher.match("/api/follow/user/**", path)) return true;
+        if ("GET".equals(method) && pathMatcher.match("/api/profile/github/**", path)) return true;
+        if ("POST".equals(method) && pathMatcher.match("/api/auth", path)) return true;
+        if ("POST".equals(method) && pathMatcher.match("/api/users", path)) return true;
 
-        if (new AntPathRequestMatcher("/api/profile/image", HttpMethod.POST.toString()).matches(request)) {
-            return true;
-        }
-
-        if (new AntPathRequestMatcher("/api/profile/user/**", HttpMethod.GET.toString()).matches(request)) {
-            return true;
-        }
-
-        if (new AntPathRequestMatcher("/api/follow/user/**", HttpMethod.GET.toString()).matches(request)) {
-            return true;
-        }
-
-        if (new AntPathRequestMatcher("/api/profile/github/**", HttpMethod.GET.toString()).matches(request)) {
-            return true;
-        }
-
-        if (new AntPathRequestMatcher("/api/auth", HttpMethod.POST.toString()).matches(request)) {
-            return true;
-        }
-
-        if (new AntPathRequestMatcher("/api/users", HttpMethod.POST.toString()).matches(request)) {
-            return true;
-        }
-
-        return Arrays.stream(exceptURI.split(",").clone())
-                .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
+        return Arrays.stream(exceptURI.split(","))
+            .anyMatch(pattern -> pathMatcher.match(pattern.trim(), path));
     }
+
 }
