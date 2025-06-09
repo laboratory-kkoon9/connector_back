@@ -45,9 +45,11 @@ dependencies {
     // jwt
     implementation 'com.auth0:java-jwt:4.0.0'
 
+    // bcrypt
+    implementation 'org.mindrot:jbcrypt:0.4'
+
 
     // spring security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     // WebClient

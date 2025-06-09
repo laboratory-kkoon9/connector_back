@@ -10,7 +10,7 @@ import com.connector.dto.TokenDto;
 import com.connector.global.token.TokenManager;
 import com.connector.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final TokenManager tokenManager;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public TokenResponseDto register(RegisterDto registerDto) {
@@ -29,7 +28,7 @@ public class UserService {
         User user = userRepository.save(User.builder()
             .name(registerDto.getName())
             .email(registerDto.getEmail())
-            .password(passwordEncoder.encode(registerDto.getPassword()))
+            .password(BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt()))
             .build()
         );
         return toTokenResponseDto(user);
@@ -60,8 +59,8 @@ public class UserService {
                 () -> new BadRequestException("Invalid Credentials")
         );
 
-        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-            throw new BadRequestException("비밀번호가 일치하지 않습니다.");
+        if (!BCrypt.checkpw(loginDto.getPassword(), user.getPassword())) {
+        throw new BadRequestException("비밀번호가 일치하지 않습니다.");
         }
 
         return toTokenResponseDto(user);
