@@ -47,37 +47,38 @@ public class ProfileService {
     @Transactional(readOnly = true)
     public ProfileDetailDto getProfileById(final Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
+            () -> new BadRequestException("Not Profile")
         );
 
         ProfileDetailDto profileDetailDto = ProfileDetailDto.builder()
-                .user(profile.getUser())
-                .bio(profile.getBio())
-                .company(profile.getCompany())
-                .website(profile.getWebsite())
-                .location(profile.getLocation())
-                .skills(profile.getSkills())
-                .educations(profile.getEducations())
-                .experiences(profile.getExperiences())
-                .build();
+            .user(profile.getUser())
+            .bio(profile.getBio())
+            .company(profile.getCompany())
+            .website(profile.getWebsite())
+            .location(profile.getLocation())
+            .skills(profile.getSkills())
+            .githubusername(profile.getGithubUserName())
+            .educations(profile.getEducations())
+            .experiences(profile.getExperiences())
+            .build();
         return profileDetailDto;
     }
 
     @Transactional
     public void upsertProfile(Long userId, UpsertProfileDto profileDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Optional<Profile> optionalProfile = profileRepository.findByUser(user);
 
-        if(optionalProfile.isPresent()) {
+        if (optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
             profile.update(profileDto);
 
-            if(profileDto.getSkills() != null) {
+            if (profileDto.getSkills() != null) {
                 changeSkills(profileDto, profile);
             }
         } else {
@@ -90,7 +91,7 @@ public class ProfileService {
     private void changeSkills(UpsertProfileDto profileDto, Profile profile) {
         List<String> skillNames = TextParser.doSplitCode(profileDto.getSkills());
         List<Skill> skills = skillNames.stream().map(
-                Skill::of
+            Skill::of
         ).collect(Collectors.toList());
         profile.changeSkills(skills);
     }
@@ -98,10 +99,10 @@ public class ProfileService {
     @Transactional
     public void addExperience(Long userId, ExperienceDto experienceDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
+            () -> new BadRequestException("Not Profile")
         );
 
         profile.addExperience(experienceDto.toEntity());
@@ -115,10 +116,10 @@ public class ProfileService {
     @Transactional
     public void addEducation(Long userId, EducationDto educationDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException("Not User")
+            () -> new BadRequestException("Not User")
         );
         Profile profile = profileRepository.findByUser(user).orElseThrow(
-                () -> new BadRequestException("Not Profile")
+            () -> new BadRequestException("Not Profile")
         );
         profile.addEducation(educationDto.toEntity());
     }

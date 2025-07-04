@@ -25,6 +25,8 @@ public class ProfileDetailDto {
     private String bio;
     @Schema(description = "웹사이트", example = "https://www.naver.com")
     private String website;
+    @Schema(description = "깃허브 아이디", example = "kkoon9")
+    private String githubusername;
     @Schema(description = "기술 스택")
     private List<String> skills;
     @Schema(description = "경력")
@@ -34,13 +36,14 @@ public class ProfileDetailDto {
 
 
     @Builder
-    public ProfileDetailDto(User user, String company, String location, String status, String bio, String website, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
+    public ProfileDetailDto(User user, String company, String location, String status, String bio, String website, String githubusername, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
         this.user = user;
         this.company = company;
         this.location = location;
         this.status = status;
         this.bio = bio;
         this.website = website;
+        this.githubusername = githubusername;
         this.skills = skills.stream().map(Skill::getName).collect(Collectors.toList());
         this.experience = experiences.stream().map(GetExperienceDto::from).collect(Collectors.toList());
         this.education = educations.stream().map(GetEducationDto::from).collect(Collectors.toList());

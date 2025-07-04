@@ -20,6 +20,8 @@ public class UpsertProfileDto {
     private String bio;
     @Schema(description = "현재 구직 상태")
     private String status;
+    @Schema(description = "깃허브 아이디")
+    private String githubusername;
     @Schema(description = "기술 스택 comma(,)로 구분")
     private String skills;
 
@@ -30,6 +32,7 @@ public class UpsertProfileDto {
             .website(website)
             .bio(bio)
             .status(status)
+            .githubUserName(githubusername)
             .skills(new ArrayList<>())
             .educations(new ArrayList<>())
             .experiences(new ArrayList<>())

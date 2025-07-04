@@ -49,6 +49,9 @@ public class Profile {
     @Column(name = "website")
     private String website;
 
+    @Column(name = "github_user_name")
+    private String githubUserName;
+
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // 참조를 당하는 쪽에서 읽기만 가능
     private List<Skill> skills = new ArrayList<>();
 
@@ -65,6 +68,7 @@ public class Profile {
         if(profileDto.getLocation() != null) this.location = profileDto.getLocation();
         if(profileDto.getBio() != null) this.bio = profileDto.getBio();
         if(profileDto.getStatus() != null) this.status = profileDto.getStatus();
+        if(profileDto.getGithubusername() != null) this.githubUserName = profileDto.getGithubusername();
     }
 
     public void changeSkills(List<Skill> skills) {
@@ -97,7 +101,7 @@ public class Profile {
     }
 
     @Builder
-    public Profile(Long id, User user, String company, String status, String location, String bio, String website, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
+    public Profile(Long id, User user, String company, String status, String location, String bio, String website, String githubUserName, List<Skill> skills, List<Experience> experiences, List<Education> educations) {
         this.id = id;
         this.user = user;
         this.company = company;
@@ -105,6 +109,7 @@ public class Profile {
         this.location = location;
         this.bio = bio;
         this.website = website;
+        this.githubUserName = githubUserName;
         this.skills = skills;
         this.experiences = experiences;
         this.educations = educations;
